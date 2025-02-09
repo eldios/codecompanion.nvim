@@ -1,14 +1,38 @@
----@diagnostic disable: unused-local
-local config = require("codecompanion.config")
 local curl = require("plenary.curl")
 local log = require("codecompanion.utils.log")
-local utils = require("codecompanion.utils.adapters")
+
+local function get_env_vars(self)
+  -- Initialize env_replaced if it doesn't exist
+  self.env_replaced = self.env_replaced or {}
+  -- Copy environment variables
+  self.env_replaced.url = self.env.url
+  self.env_replaced.chat_url = self.env.chat_url
+  self.env_replaced.api_key = self.env.api_key
+end
+
+local function get_models(self, opts)
+  self:get_env_vars()
+  local url = self.env_replaced.url .. "/api/models"
+  local headers = self:get_headers({ env = self.env_replaced })
+
+  local response = curl.get(url, {
+    headers = headers,
+  })
+
+  local status, result = pcall(vim.json.decode, response.body)
+  if not status or response.status ~= 200 then
+    log:error("Failed to fetch models: " .. (result and result.error or "Unknown error"))
+    return {}
+  end
+
+  return result.models or {}
+end
 
 return {
   name = "OpenWebUI",
   options = {
     model = {
-      default = "mistralai/Mistral-7B-Instruct-v0.2",
+      default = "llama2",
       prompt = "The model to use for the request",
     },
     temperature = {
@@ -24,33 +48,32 @@ return {
       prompt = "The top_k value to use for sampling",
     },
     max_tokens = {
-      default = 256,
+      default = 2048,
       prompt = "The maximum number of tokens to generate",
       tokens = true,
       vision = false,
     },
   },
-  url = "${url}/{chat_url}",
+  url = "${url}/${chat_url}",
   env = {
     url = "http://localhost:8080",
     chat_url = "api/chat",
     api_key = "",
   },
   handlers = {
-    ---Set the parameters
-    ---@param self CodeCompanion.Adapter
-    ---@param params table
-    ---@param messages table
-    ---@return table
-    form_parameters = function(self, params, messages)
-      return params
+    get_env_vars = get_env_vars,
+
+    form_parameters = function(_, params, _)
+      return {
+        model = params.model,
+        temperature = params.temperature,
+        top_p = params.top_p,
+        top_k = params.top_k,
+        max_tokens = params.max_tokens,
+      }
     end,
 
-    ---Set the format of the role and content for the messages from the chat buffer
-    ---@param self CodeCompanion.Adapter
-    ---@param messages table Format is: { { role = "user", content = "Your prompt here" } }
-    ---@return table
-    form_messages = function(self, messages)
+    form_messages = function(_, messages)
       local formatted_messages = {}
       for _, message in ipairs(messages) do
         table.insert(formatted_messages, {
@@ -58,76 +81,62 @@ return {
           content = message.content,
         })
       end
-      return { inputs = formatted_messages }
+      return {
+        messages = formatted_messages,
+      }
     end,
 
-    ---Parses the output for a chat buffer
-    ---@param self CodeCompanion.Adapter
-    ---@param data string
-    ---@return string
-    chat_output = function(self, data)
-      local response = vim.json.decode(data)
-      if response and response.response then
-        return response.response
+    chat_output = function(_, data)
+      local ok, response = pcall(vim.json.decode, data)
+      if ok and response and response.choices and response.choices[1] and response.choices[1].message then
+        return response.choices[1].message.content
       else
         return "Error: Could not parse response"
       end
     end,
 
-    ---Parses the output for inline buffer
-    ---@param self CodeCompanion.Adapter
-    ---@param data string
-    ---@param context table
-    ---@return string
-    inline_output = function(self, data, context)
-      local response = vim.json.decode(data)
-      if response and response.response then
-        return response.response
+    inline_output = function(_, data, _)
+      local ok, response = pcall(vim.json.decode, data)
+      if ok and response and response.choices and response.choices[1] and response.choices[1].message then
+        return response.choices[1].message.content
       else
         return "Error: Could not parse response"
       end
     end,
 
-    ---Parses the tokens from the response
-    ---@param self CodeCompanion.Adapter
-    ---@param data string
-    ---@return integer
-    tokens = function(self, data)
-      local response = vim.json.decode(data)
-      return response.tokens
+    tokens = function(_, data)
+      local ok, response = pcall(vim.json.decode, data)
+      if ok and response and response.usage then
+        return response.usage.total_tokens
+      end
+      return 0
     end,
 
-    ---@param self CodeCompanion.Adapter
-    ---@param data string
-    on_exit = function(self, data)
-      -- Messaage on exit
+    check_error = function(response)
+      if response.status ~= 200 then
+        local ok, json = pcall(vim.json.decode, response.body)
+        if not ok then
+          return "Failed to decode JSON: " .. response.body
+        end
+
+        if json and json.error then
+          return "Error: " .. json.error
+        else
+          return "Request failed with status code: " .. response.status .. " and body: " .. response.body
+        end
+      end
+      return nil
+    end,
+
+    get_headers = function(opts)
+      local headers = {
+        ["Content-Type"] = "application/json",
+      }
+      if opts.env.api_key and opts.env.api_key ~= "" then
+        headers["Authorization"] = "Bearer " .. opts.env.api_key
+      end
+      return headers
     end,
   },
-  ---@param response table
-  ---@return string|nil
-  check_error = function(response)
-    if response.status_code ~= 200 then
-      local ok, json = pcall(vim.json.decode, response.body)
-      if not ok then
-        return "Failed to decode JSON: " .. response.body
-      end
-
-      if json and json.error then
-        return "Error: " .. json.error
-      else
-        return "Request failed with status code: " .. response.status_code .. " and body: " .. response.body
-      end
-    end
-    return nil
-  end,
-
-  ---@param opts table
-  ---@return table
-  get_headers = function(opts)
-    local headers = {}
-    if opts.env.api_key and opts.env.api_key ~= "" then
-      headers["Authorization"] = "Bearer " .. opts.env.api_key
-    end
-    return headers
-  end,
+  get_models = get_models,
 }
