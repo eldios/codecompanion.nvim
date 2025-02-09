@@ -1,6 +1,8 @@
 ---@diagnostic disable: unused-local
-local log = require("codecompanion.log")
-local utils = require("codecompanion.utils")
+local config = require("codecompanion.config")
+local curl = require("plenary.curl")
+local log = require("codecompanion.utils.log")
+local utils = require("codecompanion.utils.adapters")
 
 return {
   name = "OpenWebUI",
