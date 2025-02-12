@@ -3,14 +3,14 @@ local curl = require("plenary.curl")
 local log = require("codecompanion.utils.log")
 local utils = require("codecompanion.utils.adapters")
 
----Get a list of available OperWebUI models
+---Get a list of available OpenWebui models
 ---@params self CodeCompanion.Adapter
 ---@params opts? table
 ---@return table
-local function get_models(self, opts) end
+local function get_models(self, opts)
   local adapter = require("codecompanion.adapters").resolve(self)
   if not adapter then
-    log:error("Could not resolve OpenWebUI adapter in the `get_models` function")
+    log:error("Could not resolve OpenWebui adapter in the `get_models` function")
     return {}
   end
 
@@ -33,7 +33,7 @@ local function get_models(self, opts) end
     })
   end)
   if not ok then
-    log:error("Could not get the Ollama models from " .. url .. "/api/models.\nError: %s", response)
+    log:error("Could not get the OpenWebui models from " .. url .. "/api/models.\nError: %s", response)
     return {}
   end
 
@@ -54,10 +54,10 @@ local function get_models(self, opts) end
   return models
 end
 
----@class OpenWebUI.Adapter: CodeCompanion.Adapter
+---@class OpenWebui.Adapter: CodeCompanion.Adapter
 return {
-  name = "openwebui",
-  formatted_name = "OpenWebUI",
+  name = "OpenWebui",
+  formatted_name = "OpenWebui",
   roles = {
     llm = "assistant",
     user = "user",
@@ -72,9 +72,25 @@ return {
   },
   url = "${url}/api/chat/completions",
   env = {
-    url = "http://localhost:8000",
+    url = "http://localhost:8080",
+    api_key = "OPENWEBUI_API_KEY",
+  },
+  headers = {
+    ["Content-Type"] = "application/json",
+    Authorization = "Bearer ${api_key}",
   },
   handlers = {
+    ---@param self CodeCompanion.Adapter
+    ---@return boolean
+    setup = function(self)
+      self.parameters.stream = false
+      if self.opts and self.opts.stream then
+        self.parameters.stream = true
+      end
+
+      return true
+    end,
+
     ---Set the parameters
     ---@param self CodeCompanion.Adapter
     ---@param params table
@@ -98,8 +114,9 @@ return {
     ---@param data table The data from the LLM
     ---@return number|nil
     tokens = function(self, data)
-      if data then
-        local ok, json = pcall(vim.json.decode, data, { luanil = { object = true } })
+      if data and data ~= "" then
+        local data_mod = utils.clean_streamed_data(data)
+        local ok, json = pcall(vim.json.decode, data_mod, { luanil = { object = true } })
 
         if not ok then
           return
@@ -120,23 +137,47 @@ return {
       local output = {}
 
       if data and data ~= "" then
-        local ok, json = pcall(vim.json.decode, data, { luanil = { object = true } })
-
-        if not ok then
-          return { status = "error" }
+        if not self.opts.stream then
+          data = data.body
         end
+        local data_mod = utils.clean_streamed_data(data)
+        local ok, json = pcall(vim.json.decode, data_mod, { luanil = { object = true } })
 
-        local message = json.message
+        if ok and json.choices and #json.choices > 0 then
+          local choice = json.choices[1]
 
-        if message.content then
-          output.content = message.content
-          output.role = message.role or nil
+          if choice.finish_reason then
+            local reason = choice.finish_reason
+            if reason ~= "stop" then
+              return {
+                status = "error",
+                output = "The stream was stopped due to: " .. reason,
+              }
+            end
+          end
+
+          local delta = (self.opts and self.opts.stream) and choice.delta or choice.message
+
+          if delta then
+            if delta.role then
+              output.role = delta.role
+            else
+              output.role = "system"
+            end
+
+            -- Some providers may return empty content
+            if delta.content then
+              output.content = delta.content
+            else
+              output.content = ""
+            end
+
+            return {
+              status = "success",
+              output = output,
+            }
+          end
         end
-
-        return {
-          status = "success",
-          output = output,
-        }
       end
 
       return nil
@@ -149,14 +190,24 @@ return {
     ---@return table|nil
     inline_output = function(self, data, context)
       if data and data ~= "" then
+        if not self.opts.stream then
+          data = data.body
+        end
+        data = utils.clean_streamed_data(data)
         local ok, json = pcall(vim.json.decode, data, { luanil = { object = true } })
 
-        if not ok then
-          log:error("Error malformed json: %s", json)
-          return
-        end
+        if ok then
+          --- Some third-party OpenAI forwarding services may have a return package with an empty json.choices.
+          if not json.choices or #json.choices == 0 then
+            return
+          end
 
-        return json.message.content
+          local choice = json.choices[1]
+          local delta = (self.opts and self.opts.stream) and choice.delta or choice.message
+          if delta.content then
+            return delta.content
+          end
+        end
       end
     end,
 
