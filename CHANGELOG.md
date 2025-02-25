@@ -1,5 +1,214 @@
 # Changelog
 
+## [12.11.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.10.1...v12.11.0) (2025-02-25)
+
+
+### Features
+
+* **adapters:** add gemini-2.0-pro-exp-02-05 model option ([#1007](https://github.com/olimorris/codecompanion.nvim/issues/1007)) ([bef6d90](https://github.com/olimorris/codecompanion.nvim/commit/bef6d90a73652672c09b1b6323c8d5a0215020c0))
+
+## [12.10.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.10.0...v12.10.1) (2025-02-25)
+
+
+### Bug Fixes
+
+* **ollama:** allow users to customize the authorization header in get_models closes [#976](https://github.com/olimorris/codecompanion.nvim/issues/976) ([#985](https://github.com/olimorris/codecompanion.nvim/issues/985)) ([a4f1046](https://github.com/olimorris/codecompanion.nvim/commit/a4f1046e26e1ca537fcc21b881051c41f00e337c))
+
+## [12.10.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.9.0...v12.10.0) (2025-02-25)
+
+
+### Features
+
+* **adapters:** add claude 3.7 thought to copilot adapter ([#1001](https://github.com/olimorris/codecompanion.nvim/issues/1001)) ([6e53570](https://github.com/olimorris/codecompanion.nvim/commit/6e535709234e07995bacae08f267c0823457f1c5))
+
+## [12.9.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.8.1...v12.9.0) (2025-02-25)
+
+
+### Features
+
+* **adapters:** add claude-3.7-sonnet to copilot ([#1002](https://github.com/olimorris/codecompanion.nvim/issues/1002)) ([9729441](https://github.com/olimorris/codecompanion.nvim/commit/9729441037518c487a4a223165d463abcd1bdd67))
+
+## [12.8.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.8.0...v12.8.1) (2025-02-25)
+
+
+### Bug Fixes
+
+* **adapters:** only try and replace str variables ([#999](https://github.com/olimorris/codecompanion.nvim/issues/999)) ([c5990b4](https://github.com/olimorris/codecompanion.nvim/commit/c5990b43d0801438aac4afaef7a779ff98297a85))
+
+## [12.8.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.7.2...v12.8.0) (2025-02-24)
+
+
+### Features
+
+* **adapters:** add claude-3.7-sonnet and make default ([#996](https://github.com/olimorris/codecompanion.nvim/issues/996)) ([c207203](https://github.com/olimorris/codecompanion.nvim/commit/c207203a005baf0bd5bae3401ac202f568c60581))
+
+## [12.7.2](https://github.com/olimorris/codecompanion.nvim/compare/v12.7.1...v12.7.2) (2025-02-23)
+
+
+### Bug Fixes
+
+* **inline:** setting placement from prompt library closes [#990](https://github.com/olimorris/codecompanion.nvim/issues/990) ([#991](https://github.com/olimorris/codecompanion.nvim/issues/991)) ([836dafc](https://github.com/olimorris/codecompanion.nvim/commit/836dafca125ec713f8a9379c69319f7889504824))
+
+## [12.7.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.7.0...v12.7.1) (2025-02-22)
+
+
+### Bug Fixes
+
+* **adapter:** variable substitution in 'raw'. ([#980](https://github.com/olimorris/codecompanion.nvim/issues/980)) ([6c628f5](https://github.com/olimorris/codecompanion.nvim/commit/6c628f56419ce8cca7b93cfaba89cde90a3a3a51))
+
+## [12.7.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.6.1...v12.7.0) (2025-02-20)
+
+
+### Features
+
+* add reference handling to workflow processing ([#969](https://github.com/olimorris/codecompanion.nvim/issues/969)) ([4c9f120](https://github.com/olimorris/codecompanion.nvim/commit/4c9f120033c1c1b4c17536c2407c288d91d34e95))
+
+## [12.6.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.6.0...v12.6.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* **tools:** add missing write flag attribute when editing files ([#966](https://github.com/olimorris/codecompanion.nvim/issues/966)) ([d5bc944](https://github.com/olimorris/codecompanion.nvim/commit/d5bc9441d55a9e6f81191ec96871ae4a48890997))
+
+## [12.6.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.5.2...v12.6.0) (2025-02-19)
+
+
+### Features
+
+* **chat:** easier to add refs from external sources ([#960](https://github.com/olimorris/codecompanion.nvim/issues/960)) ([b7b43f6](https://github.com/olimorris/codecompanion.nvim/commit/b7b43f62ede6814fc5ab90d464016c63546d22a9))
+* **tools:** when `stderr` is not empty, do not discard `stdout` when exit code is 0 ([#955](https://github.com/olimorris/codecompanion.nvim/issues/955)) ([d8de491](https://github.com/olimorris/codecompanion.nvim/commit/d8de491ebf2ed4bca7006ae33e6990ec3f8d60d0))
+
+## [12.5.2](https://github.com/olimorris/codecompanion.nvim/compare/v12.5.1...v12.5.2) (2025-02-18)
+
+
+### Bug Fixes
+
+* **inline:** ensure placement is in lower case ([#949](https://github.com/olimorris/codecompanion.nvim/issues/949)) ([04019d5](https://github.com/olimorris/codecompanion.nvim/commit/04019d5aefd70c7d44031c97e2f2126b6ed408af))
+
+## [12.5.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.5.0...v12.5.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **tools:** can now chain jobs effectively ([#945](https://github.com/olimorris/codecompanion.nvim/issues/945)) ([2bab6d7](https://github.com/olimorris/codecompanion.nvim/commit/2bab6d78a3c4b05e852c80cadb13fbc8b1e0c99f))
+* **tools:** make stderr capturing work for "streaming" output ([#943](https://github.com/olimorris/codecompanion.nvim/issues/943)) ([199824e](https://github.com/olimorris/codecompanion.nvim/commit/199824e89b0c459cc489d176aac60ce6c909d5a1))
+
+## [12.5.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.4.0...v12.5.0) (2025-02-18)
+
+
+### Features
+
+* **inline:** new and improved assistant ([#904](https://github.com/olimorris/codecompanion.nvim/issues/904)) ([3e4fb61](https://github.com/olimorris/codecompanion.nvim/commit/3e4fb6176a9c1df456795a22891f865a2f4ee56a))
+
+
+### Bug Fixes
+
+* **adapters:** `on_exit` is called when request is cancelled ([#942](https://github.com/olimorris/codecompanion.nvim/issues/942)) ([df2c5f6](https://github.com/olimorris/codecompanion.nvim/commit/df2c5f6abe7a8e14eb792cf633fafee826d892a2))
+
+## [12.4.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.3.1...v12.4.0) (2025-02-17)
+
+
+### Features
+
+* **tools:** allow passing a table as the `callback` of a tool. ([#936](https://github.com/olimorris/codecompanion.nvim/issues/936)) ([689ea6e](https://github.com/olimorris/codecompanion.nvim/commit/689ea6edbcdf0d1d16a90d41d5fa96cbdac4633f))
+
+## [12.3.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.3.0...v12.3.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* **adapters:** `openai_compatible` no longer forces schema ([#914](https://github.com/olimorris/codecompanion.nvim/issues/914)) ([ba06239](https://github.com/olimorris/codecompanion.nvim/commit/ba0623998febc50859b172bfd7c8fe8bf180a22b)), closes [#918](https://github.com/olimorris/codecompanion.nvim/issues/918)
+
+## [12.3.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.2.5...v12.3.0) (2025-02-16)
+
+
+### Features
+
+* **adapters:** can hide default adapters ([#925](https://github.com/olimorris/codecompanion.nvim/issues/925)) ([f4b72d7](https://github.com/olimorris/codecompanion.nvim/commit/f4b72d746eb9549747e5236649306f5c56c1ae5a))
+
+## [12.2.5](https://github.com/olimorris/codecompanion.nvim/compare/v12.2.4...v12.2.5) (2025-02-15)
+
+
+### Bug Fixes
+
+* **chat:** debug window height and width asfunctions ([#926](https://github.com/olimorris/codecompanion.nvim/issues/926)) ([1d67908](https://github.com/olimorris/codecompanion.nvim/commit/1d67908153855bacc28a766ecb0903c68f14b2d8)), closes [#905](https://github.com/olimorris/codecompanion.nvim/issues/905)
+
+## [12.2.4](https://github.com/olimorris/codecompanion.nvim/compare/v12.2.3...v12.2.4) (2025-02-14)
+
+
+### Bug Fixes
+
+* **chat:** [#915](https://github.com/olimorris/codecompanion.nvim/issues/915) parsing show_settings when InsertLeave is executed ([#916](https://github.com/olimorris/codecompanion.nvim/issues/916)) ([1103551](https://github.com/olimorris/codecompanion.nvim/commit/1103551e8ba5772522422017ca618a65d385db2c))
+
+## [12.2.3](https://github.com/olimorris/codecompanion.nvim/compare/v12.2.2...v12.2.3) (2025-02-12)
+
+
+### Bug Fixes
+
+* **chat:** [#906](https://github.com/olimorris/codecompanion.nvim/issues/906) ignore system prompt now works ([#909](https://github.com/olimorris/codecompanion.nvim/issues/909)) ([4d0e4dd](https://github.com/olimorris/codecompanion.nvim/commit/4d0e4dd80016a63ffcf28953ba13da72a1ccd953))
+
+## [12.2.2](https://github.com/olimorris/codecompanion.nvim/compare/v12.2.1...v12.2.2) (2025-02-12)
+
+
+### Bug Fixes
+
+* **chat:** [#887](https://github.com/olimorris/codecompanion.nvim/issues/887) header separator is now detected ([#902](https://github.com/olimorris/codecompanion.nvim/issues/902)) ([63e76c5](https://github.com/olimorris/codecompanion.nvim/commit/63e76c580d49eb30c147594a8bf9ca50f145f8f7))
+
+## [12.2.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.2.0...v12.2.1) (2025-02-11)
+
+
+### Bug Fixes
+
+* **workspaces:** add description to urls from cache and check they exist ([#900](https://github.com/olimorris/codecompanion.nvim/issues/900)) ([2d08176](https://github.com/olimorris/codecompanion.nvim/commit/2d0817684206b6caa17c72c2a58d3e21641d96fe))
+
+## [12.2.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.1.2...v12.2.0) (2025-02-11)
+
+
+### Features
+
+* **slash_cmds:** terminal command only shows latest changes ([#898](https://github.com/olimorris/codecompanion.nvim/issues/898)) ([cde1882](https://github.com/olimorris/codecompanion.nvim/commit/cde18827e796f898b18899b5dbecf3badf72d2a9))
+
+
+### Bug Fixes
+
+* **openai:** model streaming ([#896](https://github.com/olimorris/codecompanion.nvim/issues/896)) ([28a03a3](https://github.com/olimorris/codecompanion.nvim/commit/28a03a38c7f9019fd303614d1d42b4539f324b97))
+
+## [12.1.2](https://github.com/olimorris/codecompanion.nvim/compare/v12.1.1...v12.1.2) (2025-02-11)
+
+
+### Bug Fixes
+
+* **openai:** [#892](https://github.com/olimorris/codecompanion.nvim/issues/892) handle different finish reasons ([#893](https://github.com/olimorris/codecompanion.nvim/issues/893)) ([70179b0](https://github.com/olimorris/codecompanion.nvim/commit/70179b00092a1ab45114448b256bb02c2fdb34de))
+
+## [12.1.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.1.0...v12.1.1) (2025-02-11)
+
+
+### Bug Fixes
+
+* **chat:** [#889](https://github.com/olimorris/codecompanion.nvim/issues/889) pinned file references always have same id ([#890](https://github.com/olimorris/codecompanion.nvim/issues/890)) ([cbac9bc](https://github.com/olimorris/codecompanion.nvim/commit/cbac9bc6552a0eb3c3b6b0a64adb5ddd71617dbc))
+
+## [12.1.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.0.1...v12.1.0) (2025-02-11)
+
+
+### Features
+
+* adapter and debug window improvement ([#880](https://github.com/olimorris/codecompanion.nvim/pull/880)) ([be55c9b](https://github.com/olimorris/codecompanion.nvim/commit/be55c9b05d34940a15ad5aed70f62f04e333c7c4))
+* **events:** new request streaming event ([#878](https://github.com/olimorris/codecompanion.nvim/issues/878)) ([6846482](https://github.com/olimorris/codecompanion.nvim/commit/68464826515b764ebae5fdf28e4d3f8c01c80296))
+
+## [12.0.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.0.0...v12.0.1) (2025-02-09)
+
+
+### Bug Fixes
+
+* **chat:** incorrectly applying settings ([#881](https://github.com/olimorris/codecompanion.nvim/issues/881)) ([2b0fe19](https://github.com/olimorris/codecompanion.nvim/commit/2b0fe199ca7d4b38895a8ab29b6320ca877809c6))
+
+## [12.0.0](https://github.com/olimorris/codecompanion.nvim/compare/v11.28.0...v12.0.0) (2025-02-09)
+
+
+### Features
+
+* :sparkles: Agentic Workflows and much more ([#832](https://github.com/olimorris/codecompanion.nvim/issues/832)) ([f26fa4e](https://github.com/olimorris/codecompanion.nvim/commit/f26fa4eb8d0bd1ac0b0a2ab980839965db381fc2))
+
 ## [11.28.0](https://github.com/olimorris/codecompanion.nvim/compare/v11.27.1...v11.28.0) (2025-02-08)
 
 

@@ -57,17 +57,17 @@ local Strategies = {}
 ---@field selected table
 
 ---@param args CodeCompanion.StrategyArgs
----@return CodeCompanion.Strategies
 function Strategies.new(args)
   log:trace("Context: %s", args.context)
 
   return setmetatable({
+    called = {},
     context = args.context,
     selected = args.selected,
   }, { __index = Strategies })
 end
 
----@return CodeCompanion.Chat|nil
+---@param strategy string
 function Strategies:start(strategy)
   return self[strategy](self)
 end
@@ -101,7 +101,7 @@ function Strategies:chat()
       })
     end
 
-    log:info("Strategy: Chat")
+    log:info("[Strategy] Chat Initiated")
     return require("codecompanion.strategies.chat").new({
       adapter = self.selected.adapter,
       context = self.context,
@@ -143,67 +143,84 @@ function Strategies:chat()
   return add_ref(self.selected, chat)
 end
 
----@return CodeCompanion.Chat|nil
+---@return CodeCompanion.Chat
 function Strategies:workflow()
   local workflow = self.selected
   local stages = #workflow.prompts
 
+  log:info("[Strategy] Workflow Initiated")
+
   -- Expand the prompts
-  local eval_prompts = vim
+  local prompts = vim
     .iter(workflow.prompts)
     :map(function(prompt_group)
       return vim
         .iter(prompt_group)
         :map(function(prompt)
-          local new_prompt = vim.deepcopy(prompt)
-          if type(new_prompt.content) == "function" then
-            new_prompt.content = new_prompt.content(self.context)
+          local p = vim.deepcopy(prompt)
+          if type(p.content) == "function" then
+            p.content = p.content(self.context)
           end
-          return new_prompt
+          return p
         end)
         :totable()
     end)
     :totable()
 
-  local messages = eval_prompts[1]
+  local messages = prompts[1]
 
   -- We send the first batch of prompts to the chat buffer as messages
   local chat = require("codecompanion.strategies.chat").new({
     adapter = self.selected.adapter,
+    auto_submit = (messages[#messages].opts and messages[#messages].opts.auto_submit) or false,
     context = self.context,
     messages = messages,
-    auto_submit = (messages[#messages].opts and messages[#messages].opts.auto_submit) or false,
   })
-  table.remove(eval_prompts, 1)
+
+  if workflow.references then
+    add_ref(workflow, chat)
+  end
+
+  table.remove(prompts, 1)
 
   -- Then when it completes we send the next batch and so on
   if stages > 1 then
     local order = 1
-    vim.iter(eval_prompts):each(function(prompts)
-      for i, prompt in ipairs(prompts) do
-        chat:subscribe({
-          id = math.random(10000000),
-          order = order,
-          type = "once",
-          ---@param chat_obj CodeCompanion.Chat
-          callback = function(chat_obj)
-            vim.schedule(function()
-              chat_obj:add_buf_message(prompt)
-              if i == #prompts and prompt.opts and prompt.opts.auto_submit then
-                chat_obj:submit()
-              end
-            end)
+    vim.iter(prompts):each(function(prompt)
+      for _, val in ipairs(prompt) do
+        local event_data = vim.tbl_deep_extend("keep", {}, val, { type = "once" })
+
+        local event = {
+          callback = function()
+            if type(val.content) == "function" then
+              val.content = val.content(self.context)
+            end
+            chat:add_buf_message(val)
           end,
-        })
+          data = event_data,
+          order = order,
+        }
+
+        if event_data.repeat_until then
+          ---@param c CodeCompanion.Chat
+          event.reuse = function(c)
+            assert(type(val.repeat_until) == "function", "repeat_until must be a function")
+            return val.repeat_until(c) == false
+          end
+        end
+
+        chat.subscribers:subscribe(event)
       end
       order = order + 1
     end)
   end
+
+  return chat
 end
 
 ---@return CodeCompanion.Inline|nil
 function Strategies:inline()
-  log:info("Strategy: Inline")
+  log:info("[Strategy] Inline Initiated")
 
   local opts = self.selected.opts
 
@@ -211,14 +228,15 @@ function Strategies:inline()
     add_adapter(self, opts)
   end
 
-  return require("codecompanion.strategies.inline")
-    .new({
-      adapter = self.selected.adapter,
-      context = self.context,
-      opts = opts,
-      prompts = self.selected.prompts,
-    })
-    :start()
+  -- Allow us to test the inline strategy
+  self.called = require("codecompanion.strategies.inline").new({
+    adapter = self.selected.adapter,
+    context = self.context,
+    opts = opts,
+    prompts = self.selected.prompts,
+  })
+
+  return self.called:prompt()
 end
 
 ---Evaluate a set of prompts based on conditionals and context

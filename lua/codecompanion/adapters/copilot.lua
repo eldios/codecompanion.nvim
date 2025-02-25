@@ -82,7 +82,7 @@ end
 ---@return CopilotToken
 local function authorize_token()
   if _github_token and _github_token.expires_at > os.time() then
-    log:debug("Reusing GitHub Copilot token")
+    log:trace("Reusing GitHub Copilot token")
     return _github_token
   end
 
@@ -209,7 +209,10 @@ return {
         ["o3-mini-2025-01-31"] = { opts = { can_reason = true } },
         ["o1-2024-12-17"] = { opts = { can_reason = true } },
         ["o1-mini-2024-09-12"] = { opts = { can_reason = true } },
+        "claude-3.7-sonnet",
         "claude-3.5-sonnet",
+        "claude-3.7-sonnet",
+        "claude-3.7-sonnet-thought",
         "gpt-4o-2024-08-06",
         "gemini-2.0-flash-001",
       },
@@ -254,7 +257,7 @@ return {
       order = 4,
       mapping = "parameters",
       type = "integer",
-      default = 4096,
+      default = 15000,
       desc = "The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.",
     },
     top_p = {

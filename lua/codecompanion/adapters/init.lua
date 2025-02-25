@@ -1,6 +1,32 @@
 local config = require("codecompanion.config")
 local log = require("codecompanion.utils.log")
 
+---@class CodeCompanion.Adapter
+---@field name string The name of the adapter
+---@field formatted_name string The formatted name of the adapter
+---@field roles table The mapping of roles in the config to the LLM's defined roles
+---@field features table The features that the adapter supports
+---@field url string The URL of the generative AI service to connect to
+---@field env? table Environment variables which can be referenced in the parameters
+---@field env_replaced? table Replacement of environment variables with their actual values
+---@field headers table The headers to pass to the request
+---@field parameters table The parameters to pass to the request
+---@field body table Additional body parameters to pass to the request
+---@field temp? table A table to store temporary values which are not passed to the request
+---@field raw? table Any additional curl arguments to pass to the request
+---@field opts? table Additional options for the adapter
+---@field handlers table Functions which link the output from the request to CodeCompanion
+---@field handlers.setup? fun(self: CodeCompanion.Adapter): boolean
+---@field handlers.set_body? fun(self: CodeCompanion.Adapter, data: table): table|nil
+---@field handlers.form_parameters fun(self: CodeCompanion.Adapter, params: table, messages: table): table
+---@field handlers.form_messages fun(self: CodeCompanion.Adapter, messages: table): table
+---@field handlers.tokens? fun(self: CodeCompanion.Adapter, data: table): number|nil
+---@field handlers.chat_output fun(self: CodeCompanion.Adapter, data: table): table|nil
+---@field handlers.inline_output fun(self: CodeCompanion.Adapter, data: table, context: table): table|nil
+---@field handlers.on_exit? fun(self: CodeCompanion.Adapter, data: table): table|nil
+---@field handlers.teardown? fun(self: CodeCompanion.Adapter): any
+---@field schema? table Set of parameters for the generative AI service that the user can customise in the chat buffer
+
 ---Check if a variable starts with "cmd:"
 ---@param var string
 ---@return boolean
@@ -30,7 +56,8 @@ local function run_cmd(var)
     local result = handle:read("*a")
     log:trace("Executed cmd: %s", cmd)
     handle:close()
-    return result:gsub("%s+$", "")
+    local r = result:gsub("%s+$", "")
+    return r
   else
     return log:error("Error: Could not execute cmd: %s", cmd)
   end
@@ -79,40 +106,21 @@ end
 ---@param str string
 ---@return string
 local function replace_var(adapter, str)
+  if type(str) ~= "string" then
+    return str
+  end
+
   local pattern = "${(.-)}"
 
-  return str:gsub(pattern, function(var)
+  local result = str:gsub(pattern, function(var)
     return adapter.env_replaced[var]
   end)
+
+  return result
 end
 
 ---@class CodeCompanion.Adapter
 local Adapter = {}
-
----@class CodeCompanion.Adapter
----@field name string The name of the adapter
----@field formatted_name string The formatted name of the adapter
----@field roles table The mapping of roles in the config to the LLM's defined roles
----@field features table The features that the adapter supports
----@field url string The URL of the generative AI service to connect to
----@field env? table Environment variables which can be referenced in the parameters
----@field env_replaced? table Replacement of environment variables with their actual values
----@field headers table The headers to pass to the request
----@field parameters table The parameters to pass to the request
----@field chat_prompt string The system chat prompt to send to the LLM
----@field raw? table Any additional curl arguments to pass to the request
----@field opts? table Additional options for the adapter
----@field handlers table Functions which link the output from the request to CodeCompanion
----@field handlers.setup? fun(self: CodeCompanion.Adapter): boolean
----@field handlers.set_body? fun(self: CodeCompanion.Adapter, data: table): table|nil
----@field handlers.form_parameters fun(self: CodeCompanion.Adapter, params: table, messages: table): table
----@field handlers.form_messages fun(self: CodeCompanion.Adapter, messages: table): table
----@field handlers.tokens? fun(self: CodeCompanion.Adapter, data: table): number|nil
----@field handlers.chat_output fun(self: CodeCompanion.Adapter, data: table): table|nil
----@field handlers.inline_output fun(self: CodeCompanion.Adapter, data: table, context: table): table|nil
----@field handlers.on_exit? fun(self: CodeCompanion.Adapter, data: table): table|nil
----@field handlers.teardown? fun(self: CodeCompanion.Adapter): any
----@field schema table Set of parameters for the generative AI service that the user can customise in the chat buffer
 
 ---@return CodeCompanion.Adapter
 function Adapter.new(args)
@@ -124,6 +132,7 @@ end
 function Adapter:make_from_schema()
   local settings = {}
 
+  -- Process regular schema values
   for key, value in pairs(self.schema) do
     if type(value.condition) == "function" and not value.condition(self.schema) then
       goto continue
@@ -253,10 +262,14 @@ end
 ---@param opts? table
 ---@return CodeCompanion.Adapter
 function Adapter.extend(adapter, opts)
+  local ok
   local adapter_config
 
   if type(adapter) == "string" then
-    adapter_config = require("codecompanion.adapters." .. adapter)
+    ok, adapter_config = pcall(require, "codecompanion.adapters." .. adapter)
+    if not ok then
+      adapter_config = config.adapters[adapter]
+    end
   elseif type(adapter) == "function" then
     adapter_config = adapter()
   else
@@ -291,6 +304,7 @@ end
 function Adapter.make_safe(adapter)
   return {
     name = adapter.name,
+    formatted_name = adapter.formatted_name,
     features = adapter.features,
     url = adapter.url,
     headers = adapter.headers,

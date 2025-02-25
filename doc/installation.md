@@ -18,6 +18,7 @@ The plugin can be installed with the plugin manager of your choice:
 ```lua
 {
   "olimorris/codecompanion.nvim",
+  config = true,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
@@ -30,6 +31,9 @@ The plugin can be installed with the plugin manager of your choice:
 ```lua
 use({
   "olimorris/codecompanion.nvim",
+  config = function()
+    require("codecompanion").setup()
+  end,
   requires = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
@@ -47,6 +51,10 @@ Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'olimorris/codecompanion.nvim'
 
 call plug#end()
+
+lua << EOF
+  require("codecompanion").setup()
+EOF
 ```
 
 **Pinned plugins**
@@ -69,8 +77,9 @@ sources = {
 },
 ```
 
-The plugin also supports native completion.
+The plugin also supports [native completion](usage/chat-buffer/index#completion).
 
-## Troubleshooting
+## Help
 
-Run `:checkhealth codecompanion` to check that plugin is installed correctly.
+If you're having trouble installing the plugin, as a first step, run `:checkhealth codecompanion` to check that plugin is installed correctly. After that, consider using the [minimal.lua](https://github.com/olimorris/codecompanion.nvim/blob/main/minimal.lua)  file to troubleshoot, running it with `nvim --clean -u minimal.lua`.
+

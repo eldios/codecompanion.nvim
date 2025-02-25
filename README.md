@@ -10,6 +10,8 @@
 <a href="https://github.com/olimorris/codecompanion.nvim/releases"><img src="https://img.shields.io/github/v/release/olimorris/codecompanion.nvim?style=for-the-badge"></a>
 </p>
 
+<p align="center">Powerful AI coding, natively in Neovim</p>
+
 <p align="center">New features are always announced <a href="https://github.com/olimorris/codecompanion.nvim/discussions/categories/announcements">here</a></p>
 
 ## :purple_heart: Sponsors
@@ -17,7 +19,7 @@
 Thank you to the following people:
 
 <p align="center">
-<!-- coffee --><a href="https://github.com/bassamsdata"><img src="https://github.com/bassamsdata.png" width="60px" alt="Bassam Data" /></a><a href="https://github.com/ivo-toby"><img src="https://github.com/ivo-toby.png" width="60px" alt="Ivo Toby" /></a><a href="https://github.com/KTSCode"><img src="https://github.com/KTSCode.png" width="60px" alt="KTS Code" /></a><a href="https://x.com/luxus"><img src="https://pbs.twimg.com/profile_images/744754093495844864/GwnEJygG_400x400.jpg" width="60px" alt="Luxus" /></a><!-- coffee --><!-- sponsors --><a href="https://github.com/koskeller"><img src="https:&#x2F;&#x2F;github.com&#x2F;koskeller.png" width="60px" alt="User avatar: Konstantin Keller" /></a><a href="https://github.com/carlosflorencio"><img src="https:&#x2F;&#x2F;github.com&#x2F;carlosflorencio.png" width="60px" alt="User avatar: Carlos Florêncio" /></a><a href="https://github.com/jfgordon2"><img src="https:&#x2F;&#x2F;github.com&#x2F;jfgordon2.png" width="60px" alt="User avatar: Jeff Gordon" /></a><a href="https://github.com/rnevius"><img src="https:&#x2F;&#x2F;github.com&#x2F;rnevius.png" width="60px" alt="User avatar: Ryan Nevius" /></a><a href="https://github.com/versality"><img src="https:&#x2F;&#x2F;github.com&#x2F;versality.png" width="60px" alt="User avatar: Artyom Pertsovsky" /></a><a href="https://github.com/"><img src="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;JamesIves&#x2F;github-sponsors-readme-action&#x2F;dev&#x2F;.github&#x2F;assets&#x2F;placeholder.png" width="60px" alt="User avatar: Private Sponsor" /></a><!-- sponsors -->
+<!-- coffee --><a href="https://github.com/bassamsdata"><img src="https://github.com/bassamsdata.png" width="60px" alt="Bassam Data" /></a><a href="https://github.com/ivo-toby"><img src="https://github.com/ivo-toby.png" width="60px" alt="Ivo Toby" /></a><a href="https://github.com/KTSCode"><img src="https://github.com/KTSCode.png" width="60px" alt="KTS Code" /></a><a href="https://x.com/luxus"><img src="https://pbs.twimg.com/profile_images/744754093495844864/GwnEJygG_400x400.jpg" width="60px" alt="Luxus" /></a><!-- coffee --><!-- sponsors --><a href="https://github.com/koskeller"><img src="https:&#x2F;&#x2F;github.com&#x2F;koskeller.png" width="60px" alt="User avatar: Konstantin Keller" /></a><a href="https://github.com/carlosflorencio"><img src="https:&#x2F;&#x2F;github.com&#x2F;carlosflorencio.png" width="60px" alt="User avatar: Carlos Florêncio" /></a><a href="https://github.com/jfgordon2"><img src="https:&#x2F;&#x2F;github.com&#x2F;jfgordon2.png" width="60px" alt="User avatar: Jeff Gordon" /></a><a href="https://github.com/rnevius"><img src="https:&#x2F;&#x2F;github.com&#x2F;rnevius.png" width="60px" alt="User avatar: Ryan Nevius" /></a><a href="https://github.com/versality"><img src="https:&#x2F;&#x2F;github.com&#x2F;versality.png" width="60px" alt="User avatar: Artyom Pertsovsky" /></a><a href="https://github.com/llinfeng"><img src="https:&#x2F;&#x2F;github.com&#x2F;llinfeng.png" width="60px" alt="User avatar: Linfeng Li" /></a><a href="https://github.com/Jawkx"><img src="https:&#x2F;&#x2F;github.com&#x2F;Jawkx.png" width="60px" alt="User avatar: JAW" /></a><a href="https://github.com/prettymuchbryce"><img src="https:&#x2F;&#x2F;github.com&#x2F;prettymuchbryce.png" width="60px" alt="User avatar: Bryce Neal" /></a><a href="https://github.com/brenocq"><img src="https:&#x2F;&#x2F;github.com&#x2F;brenocq.png" width="60px" alt="User avatar: Breno Cunha Queiroz" /></a><!-- sponsors -->
 </p>
 
 <!-- panvimdoc-ignore-end -->
@@ -26,6 +28,7 @@ Thank you to the following people:
 
 - :speech_balloon: [Copilot Chat](https://github.com/features/copilot) meets [Zed AI](https://zed.dev/blog/zed-ai), in Neovim
 - :electric_plug: Support for Anthropic, Copilot, GitHub Models, DeepSeek, Gemini, Ollama, OpenAI, Azure OpenAI, HuggingFace and xAI LLMs (or bring your own!)
+- :heart_hands: User contributed and supported [adapters](https://codecompanion.olimorris.dev/configuration/adapters.html#user-contributed-adapters)
 - :rocket: Inline transformations, code creation and refactoring
 - :robot: Variables, Slash Commands, Agents/Tools and Workflows to improve LLM output
 - :sparkles: Built in prompt library for common tasks like advice on LSP errors and code explanations
@@ -35,18 +38,32 @@ Thank you to the following people:
 
 <!-- panvimdoc-ignore-start -->
 
-## :camera_flash: Screenshots
+## :camera_flash: In Action
 
 <div align="center">
-  <p>https://github.com/user-attachments/assets/aa109f1d-0ec9-4f08-bd9a-df99da03b9a4</p>
-  <p>https://github.com/user-attachments/assets/16bd6c17-bd70-41a1-83aa-7af45c166ae9</p>
+  <p>
+    <h3>The Chat Buffer</h3>
+    <video controls muted src="https://github.com/user-attachments/assets/aa109f1d-0ec9-4f08-bd9a-df99da03b9a4"></video>
+  </p>
+  <p>
+    <h3>Using Agents and Tools</h3>
+    <video conrols muted src="https://github.com/user-attachments/assets/16bd6c17-bd70-41a1-83aa-7af45c166ae9"></video>
+  </p>
+  <p>
+    <h3>Agentic Workflows</h3>
+    <video controls muted src="https://github.com/user-attachments/assets/31bae248-ae70-4395-9df1-67fc252475ca"></video>
+  </p>
+  <p>
+    <h3>Inline Assistant</h3>
+    <video controls muted src="https://github.com/user-attachments/assets/dcddcb85-cba0-4017-9723-6e6b7f080fee"></video>
+  </p>
 </div>
 
 <!-- panvimdoc-ignore-end -->
 
 ## :book: Documentation
 
-Please visit the [documentation site](https://codecompanion.olimorris.dev) for installation and configuration instructions.
+Please visit the [documentation site](https://codecompanion.olimorris.dev) for information around installation, configuration and usage.
 
 
 ## :toolbox: Troubleshooting

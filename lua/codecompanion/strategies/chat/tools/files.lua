@@ -83,11 +83,12 @@ local function edit(action)
     return util.notify(fmt("No data found in %s", action.path))
   end
 
-  if not content:find(vim.pesc(action.search)) then
+  local changed, substitutions_count = content:gsub(vim.pesc(action.search), vim.pesc(action.replace))
+  if substitutions_count == 0 then
     return util.notify(fmt("Could not find the search string in %s", action.path))
   end
 
-  p:write(content:gsub(vim.pesc(action.search), vim.pesc(action.replace)))
+  p:write(changed, "w")
 end
 
 ---Delete a file
@@ -267,7 +268,7 @@ return {
   },
   system_prompt = function(schema)
     return fmt(
-      [[### Files Tool
+      [[### Files Tool (`files`)
 
 1. **Purpose**: Create/Edit/Delete/Rename/Copy files on the file system.
 
@@ -388,6 +389,11 @@ Remember:
     ---@param action table
     ---@return boolean
     approved = function(self, action)
+      if vim.g.codecompanion_auto_tool_mode then
+        log:info("[Files Tool] Auto-approved running the command")
+        return true
+      end
+
       log:info("[Files Tool] Prompting for: %s", string.upper(action._attr.type))
 
       local prompts = {

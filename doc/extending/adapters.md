@@ -1,8 +1,14 @@
 # Creating Adapters
 
+> [!TIP]
+> Does your LLM state that it is "OpenAI Compatible"? If so, good news, you can leverage the generic
+> `openai_compatible` adapter which extends from the `openai` adapter. Something we did with [xAI](https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/adapters/xai.lua)
+
 In CodeCompanion, adapters are interfaces that act as a bridge between the plugin's functionality and an LLM. All adapters must follow the interface, below.
 
 This guide is intended to serve as a reference for anyone who wishes to contribute an adapter to the plugin or understand the inner workings of existing adapters.
+
+The plugin's in-built adapters can be found [here](https://github.com/olimorris/codecompanion.nvim/tree/main/lua/codecompanion/adapters).
 
 ## The Interface
 
@@ -18,6 +24,7 @@ Let's take a look at the interface of an adapter as per the `adapter.lua` file:
 ---@field env_replaced? table Replacement of environment variables with their actual values
 ---@field headers table The headers to pass to the request
 ---@field parameters table The parameters to pass to the request
+---@field body table Additional body parameters to pass to the request
 ---@field raw? table Any additional curl arguments to pass to the request
 ---@field opts? table Additional options for the adapter
 ---@field handlers table Functions which link the output from the request to CodeCompanion
@@ -413,11 +420,14 @@ schema = {
     ---@type string|fun(): string
     default = "gpt-4o-2024-08-06",
     choices = {
-      "gpt-4o-2024-08-06",
+      ["o3-mini-2025-01-31"] = { opts = { can_reason = true } },
+      ["o1-2024-12-17"] = { opts = { can_reason = true } },
+      ["o1-mini-2024-09-12"] = { opts = { can_reason = true } },
       "claude-3.5-sonnet",
+      "claude-3.7-sonnet",
+      "claude-3.7-sonnet-thought",
+      "gpt-4o-2024-08-06",
       "gemini-2.0-flash-001",
-      ["o1-preview-2024-09-12"] = { opts = { stream = false } },
-      ["o1-mini-2024-09-12"] = { opts = { stream = false } },
     },
   },
 }
@@ -448,4 +458,5 @@ temperature = {
 },
 ```
 
-You'll see we've specified a function call for the `condition` key. We're simply checking that the model name doesn't being with `o1` as these models don't accept temperature as a parameter. You'll also see we've specified a function call for the `validate` key. We're simply checking that the value of the temperature is between 0 and 2
+You'll see we've specified a function call for the `condition` key. We're simply checking that the model name doesn't being with `o1` as these models don't accept temperature as a parameter. You'll also see we've specified a function call for the `validate` key. We're simply checking that the value of the temperature is between 0 and 2.
+

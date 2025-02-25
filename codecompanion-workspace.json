@@ -29,6 +29,117 @@
           "path": "${base_dir}/watchers.lua"
         }
       ]
+    },
+    {
+      "name": "Workflows",
+      "system_prompt": "Within the plugin, workflows are a way for users to be able to automatically send or chain multiple prompts, sequentially, to an LLM. They do this by \"subscribing\" to a chat buffer.\n\nFocus on:\n 1. How workflows integrate with the chat buffer\n2. How they can be refactored\n3. How they can work better with the chat buffer itself.\n\nThe files to analyze are:\n${group_files}",
+      "opts": {
+        "remove_config_system_prompt": true
+      },
+      "vars": {
+        "base_dir": "lua/codecompanion/strategies"
+      },
+      "files": [
+        {
+          "description": "The `${filename}` is where the workflow are initiated from.",
+          "path": "${base_dir}/init.lua"
+        },
+        {
+          "description": "The `${filename}` is where the subscribers logic resides.",
+          "path": "${base_dir}/chat/subscribers.lua"
+        },
+        {
+          "description": "The `${filename}` file is the entry point for the chat strategy, which is called the `chat buffer`. All methods directly relating to the chat buffer reside here.",
+          "path": "${base_dir}/chat/init.lua"
+        },
+        {
+          "description": "An example workflow can be seen below:",
+          "path": "tests/stubs/workflow.lua"
+        }
+      ]
+    },
+    {
+      "name": "Tests",
+      "system_prompt": "The plugin uses a testing framework called Mini.Test. The tests are written in Lua and are located in the `tests` directory. The tests are run using the `make test` command. The tests are written in a BDD style and are used to ensure the plugin is functioning as expected.",
+      "opts": {
+        "remove_config_system_prompt": true
+      },
+      "urls": [
+        {
+          "auto_restore_cache": true,
+          "description": "Below is the Mini.Test documentation:",
+          "url": "https://raw.githubusercontent.com/echasnovski/mini.nvim/refs/heads/main/TESTING.md"
+        }
+      ],
+      "files": [
+        {
+          "description": "I've included the test helper file as well:",
+          "path": "tests/helpers.lua"
+        }
+      ]
+    },
+    {
+      "name": "Adapters",
+      "system_prompt": "In the CodeCompanion plugin, adapters are used to connect to LLMs. The adapters contain various options for the LLM's endpoint alongside a defined schema for properties such as the model, temperature, top k, top p etc. The adapters also contain various handler functions which define how messages which are sent to the LLM should be formatted alongside how output from the LLM should be received and displayed in the chat buffer. The adapters are defined in the `adapters` directory.",
+      "opts": {
+        "remove_config_system_prompt": true
+      },
+      "vars": {
+        "base_dir": "lua/codecompanion"
+      },
+      "files": [
+        {
+          "description": "Each LLM has their own adapter. This allows for LLM settings to be generated from the schema table in an adapter before they're sent to the LLM via the http file. ",
+          "path": "${base_dir}/adapters/init.lua"
+        },
+        {
+          "description": "Adapters are then passed to the http client which sends requests to LLMs via Curl:",
+          "path": "${base_dir}/http.lua"
+        },
+        {
+          "description": "Adapters must follow a schema. The validation and how schema values are extracted from the table schema is defined in:",
+          "path": "${base_dir}/schema.lua"
+        }
+      ]
+    },
+    {
+      "name": "Inline",
+      "system_prompt": "In the CodeCompanion plugin, the inline strategy allows user's to prompt LLMs to write code directly into a Neovim buffer. To make the experience as smooth as possible, the user can just send a prompt like 'refactor this class' and the LLM will generate code to answer the question, alongside providing a determination on where to place the code. This is called the placement.",
+      "opts": {
+        "remove_config_system_prompt": true
+      },
+      "vars": {
+        "base_dir": "lua/codecompanion"
+      },
+      "files": [
+        {
+          "description": "This is the entry point for the inline strategy. All methods directly relating to the inline strategy reside here. I'm in the process of refactoring this which is where I will seek your guidance. You can see how it leverages adapters to connect to an LLM and receive the response before feeding it back into a Neovim buffer.",
+          "path": "${base_dir}/strategies/inline/init.lua"
+        },
+        {
+          "description": "Adapters are then passed to the http client which sends requests to LLMs via Curl. Note that inline adapters have streaming turned off.",
+          "path": "${base_dir}/http.lua"
+        },
+        {
+          "description": "I'm including an example adapter. In this case for OpenAI. You'll see that it has a handler called 'inline_output' which handles how the output is fed back to the inline strategy.",
+          "path": "${base_dir}/adapters/openai.lua"
+        },
+        {
+          "description": "There are many entry points to make an inline edit. Most commonly is via the `:CodeCompanion` command:",
+          "path": "${base_dir}/commands.lua"
+        },
+        {
+          "description": "Including a link to the test file:",
+          "path": "tests/strategies/inline/test_inline.lua"
+        }
+      ],
+      "urls": [
+        {
+          "auto_restore_cache": true,
+          "description": "This is the inline strategy file before I started the refactorng:",
+          "url": "https://raw.githubusercontent.com/olimorris/codecompanion.nvim/refs/heads/main/lua/codecompanion/strategies/inline/init.lua"
+        }
+      ]
     }
   ]
 }

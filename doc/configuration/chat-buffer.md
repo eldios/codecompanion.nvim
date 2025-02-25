@@ -42,9 +42,9 @@ require("codecompanion").setup({
     chat = {
       variables = {
         ["my_var"] = {
-          callback = function()
-            return "Your custom content here."
-          end,
+          ---Ensure the file matches the CodeCompanion.Variable class
+          ---@return string|fun(): nil
+          callback = "/Users/Oli/Code/my_var.lua",
           description = "Explain what my_var does",
           opts = {
             contains_code = false,
@@ -68,6 +68,7 @@ require("codecompanion").setup({
     chat = {
       slash_commands = {
         ["file"] = {
+          -- Location to the slash command in CodeCompanion
           callback = "strategies.chat.slash_commands.file",
           description = "Select a file using Telescope",
           opts = {
@@ -88,13 +89,21 @@ require("codecompanion").setup({
   strategies = {
     chat = {
       slash_commands = {
-        ["mycmd"] = {
-          description = "Describe what mycmd inserts",
-          callback = function()
-            return "Custom context or data"
+        ["git_files"] = {
+          description = "List git files",
+          ---@param chat CodeCompanion.Chat
+          callback = function(chat)
+            local handle = io.popen("git ls-files")
+            if handle ~= nil then
+              local result = handle:read("*a")
+              handle:close()
+              chat:add_reference({ content = result }, "git", "<git_files>")
+            else
+              return vim.notify("No git files available", vim.log.levels.INFO, { title = "CodeCompanion" })
+            end
           end,
           opts = {
-            contains_code = true,
+            contains_code = false,
           },
         },
       },
@@ -102,6 +111,11 @@ require("codecompanion").setup({
   },
 })
 ```
+
+Credit to [@lazymaniac](https://github.com/lazymaniac) for the [inspiration](https://github.com/olimorris/codecompanion.nvim/discussions/958).
+
+> [!NOTE]
+> You can also point the callback to a lua file that resides within your own configuration
 
 ## Agents and Tools
 
@@ -137,6 +151,8 @@ require("codecompanion").setup({
 ```
 
 When users introduce the agent `@my_agent` in the chat buffer, it can call the tools you listed (like `@my_tool`) to perform tasks on your code.
+
+The `callback` option for a tool can also be a [`CodeCompanion.Tool`](/extending/tools) object, which is a table with specific keys that defines the interface and workflow of the tool.
 
 ## Layout
 

@@ -3,25 +3,43 @@ local curl = require("plenary.curl")
 local log = require("codecompanion.utils.log")
 local utils = require("codecompanion.utils.adapters")
 
+local _cached_adapter
+
+---Reset the cached adapter
+---@return nil
+local function reset()
+  _cached_adapter = nil
+end
+
 ---Get a list of available Ollama models
 ---@params self CodeCompanion.Adapter
 ---@params opts? table
 ---@return table
 local function get_models(self, opts)
-  local adapter = require("codecompanion.adapters").resolve(self)
-  if not adapter then
-    log:error("Could not resolve Ollama adapter in the `get_models` function")
-    return {}
+  -- Prevent the adapter from being resolved multiple times due to `get_models`
+  -- having both `default` and `choices` functions
+  if not _cached_adapter then
+    local adapter = require("codecompanion.adapters").resolve(self)
+    if not adapter then
+      log:error("Could not resolve Ollama adapter in the `get_models` function")
+      return {}
+    end
+    _cached_adapter = adapter
   end
 
-  adapter:get_env_vars()
-  local url = adapter.env_replaced.url
+  _cached_adapter:get_env_vars()
+  local url = _cached_adapter.env_replaced.url
 
   local headers = {
     ["content-type"] = "application/json",
   }
-  if adapter.env_replaced.api_key then
-    headers["Authorization"] = "Bearer " .. adapter.env_replaced.api_key
+
+  local auth_header = "Bearer "
+  if _cached_adapter.env_replaced.authorization then
+    auth_header = _cached_adapter.env_replaced.authorization .. " "
+  end
+  if _cached_adapter.env_replaced.api_key then
+    headers["Authorization"] = auth_header .. _cached_adapter.env_replaced.api_key
   end
 
   local ok, response = pcall(function()
@@ -63,7 +81,7 @@ return {
     user = "user",
   },
   opts = {
-    stream = true, -- NOTE: Currently, CodeCompanion ONLY supports streaming with this adapter
+    stream = true,
   },
   features = {
     text = true,
@@ -75,6 +93,17 @@ return {
     url = "http://localhost:11434",
   },
   handlers = {
+    ---@param self CodeCompanion.Adapter
+    ---@return boolean
+    setup = function(self)
+      self.parameters.stream = false
+      if self.opts and self.opts.stream then
+        self.parameters.stream = true
+      end
+
+      return true
+    end,
+
     ---Set the parameters
     ---@param self CodeCompanion.Adapter
     ---@param params table
@@ -120,6 +149,9 @@ return {
       local output = {}
 
       if data and data ~= "" then
+        if not self.opts.stream then
+          data = data.body
+        end
         local ok, json = pcall(vim.json.decode, data, { luanil = { object = true } })
 
         if not ok then
@@ -148,24 +180,29 @@ return {
     ---@param context table Useful context about the buffer to inline to
     ---@return table|nil
     inline_output = function(self, data, context)
+      if self.opts.stream then
+        return log:error("Inline output is not supported for non-streaming models")
+      end
+
       if data and data ~= "" then
-        local ok, json = pcall(vim.json.decode, data, { luanil = { object = true } })
+        local ok, json = pcall(vim.json.decode, data.body, { luanil = { object = true } })
 
         if not ok then
-          log:error("Error malformed json: %s", json)
-          return
+          log:error("Error decoding JSON: %s", data.body)
+          return { status = "error", output = json }
         end
 
-        return json.message.content
+        return { status = "success", output = json.message.content }
       end
     end,
 
     ---Function to run when the request has completed. Useful to catch errors
     ---@param self CodeCompanion.Adapter
-    ---@param data table
+    ---@param data? table
     ---@return nil
     on_exit = function(self, data)
-      if data.status >= 400 then
+      reset()
+      if data and data.status >= 400 then
         log:error("Error: %s", data.body)
       end
     end,

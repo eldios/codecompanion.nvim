@@ -16,6 +16,30 @@ T["Tools"] = new_set({
   },
 })
 
+T["Tools"]["resolve"] = new_set()
+
+T["Tools"]["resolve"]["can resolve built-in tools"] = function()
+  local tool = tools.resolve({
+    callback = "strategies.chat.tools.editor",
+    description = "Update a buffer with the LLM's response",
+  })
+
+  h.eq(type(tool), "table")
+  h.eq("editor", tool.name)
+  h.eq(6, #tool.schema)
+end
+
+T["Tools"]["resolve"]["can resolve user's tools"] = function()
+  local tool = tools.resolve({
+    callback = vim.fn.getcwd() .. "/tests/stubs/foo.lua",
+    description = "Some foo function",
+  })
+
+  h.eq(type(tool), "table")
+  h.eq("foo", tool.name)
+  h.eq("This is the Foo tool", tool.cmds[1]())
+end
+
 T["Tools"][":parse"] = new_set()
 
 T["Tools"][":parse"]["a message with a tool"] = function()
@@ -27,52 +51,68 @@ T["Tools"][":parse"]["a message with a tool"] = function()
   local messages = chat.messages
 
   h.eq("My tool system prompt", messages[#messages - 1].content)
-  h.eq("foo", messages[#messages].content)
+  h.eq("my foo system prompt", messages[#messages].content)
 end
 
-T["Tools"][":parse"]["an LLMs response"] = function()
-  function add_messages()
-    chat:add_buf_message({
-      role = "user",
-      content = "@foo do some stuff",
-    })
-    chat:add_buf_message({
-      role = "llm",
-      content = [[Sure. Let's do this.
+T["Tools"][":parse"]["a response from the LLM"] = function()
+  chat:add_buf_message({
+    role = "user",
+    content = "@foo do some stuff",
+  })
+  chat:add_buf_message({
+    role = "llm",
+    content = [[Sure. Let's do this.
 
 ```xml
 <tools>
-  <tool>
-    <name>foo</name>
+  <tool name="foo">
     <content>Some foo function</content>
   </tool>
 </tools>
 ```
 ]],
-    })
-  end
-
-  -- Mock out the tools:setup function
-  function chat.tools:setup() end
-
-  add_messages()
-  chat.header_line = 5
-
-  -- Make sure we parse the whole buffer
+  })
+  chat.tools.chat = chat
   chat.tools:parse_buffer(chat, 5, 100)
 
-  h.eq(
-    "<tools>\n  <tool>\n    <name>foo</name>\n    <content>Some foo function</content>\n  </tool>\n</tools>",
-    vim.trim(chat.tools.extracted[1])
-  )
+  local lines = h.get_buf_lines(chat.bufnr)
+  h.eq("This is from the foo tool", lines[#lines])
+end
+
+T["Tools"][":parse"]["a nested response from the LLM"] = function()
+  chat:add_buf_message({
+    role = "user",
+    content = "@foo @bar do some stuff",
+  })
+  chat:add_buf_message({
+    role = "llm",
+    content = [[Sure. Let's do this.
+
+```xml
+<tools>
+  <tool name="foo">
+    <content>Some foo function</content>
+  </tool>
+  <tool name="bar">
+    <content>Some bar function</content>
+  </tool>
+</tools>
+```
+]],
+  })
+  chat.tools.chat = chat
+  chat.tools:parse_buffer(chat, 5, 100)
+
+  local lines = h.get_buf_lines(chat.bufnr)
+  h.eq("This is from the foo toolThis is from the bar tool", lines[#lines])
 end
 
 T["Tools"][":replace"] = new_set()
 
 T["Tools"][":replace"]["should replace the tool in the message"] = function()
-  local message = "@foo replace this tool"
+  local message = "run the @foo tool"
   local result = tools:replace(message, "foo")
-  h.eq("replace this tool", result)
+  h.eq("run the foo tool", result)
 end
 
 return T
