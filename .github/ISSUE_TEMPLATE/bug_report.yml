@@ -63,17 +63,20 @@ body:
         description: A concise description of what you expected to happen.
       validations:
         required: true
-    - type: textarea
+
+    - type: markdown
       attributes:
-        label: Log output
-        description: Share the output from the log file. You can find this with `:checkhealth codecompanion`
-      validations:
-        required: false
+        value: |
+          ## Reproduce
+
+          Please provide the necessary config so I can recreate this issue. It's a big ask of my time as a single maintainer to investigate all possible issues that a user is experiencing.
+
+          Use the template `init.lua` file provided to you below. A minimal config will be created for you in your working directory under `.repro`.
 
     - type: textarea
       attributes:
-        label: File to Reproduce
-        description: Minimal `init.lua` to reproduce this issue. Save as `repro.lua` and run with `nvim -u repro.lua`
+        label: init.lua file
+        description: Minimal file to reproduce this issue. Save as `init.lua` and run with `nvim -u init.lua`
         value: |
           --[[
           NOTE: Set the config path to enable the copilot adapter to work.
@@ -159,10 +162,17 @@ body:
       validations:
         required: true
 
+    - type: textarea
+      attributes:
+        label: Log output
+        description: Share the output from the log file in your current working directory at `.repro/state/nvim/codecompanion.log`
+      validations:
+        required: false
+
     - type: checkboxes
       attributes:
         label: Have you provided and tested with a repro.lua file?
-        description: This issue will be closed if I can't recreate it
+        description: I'll close this issue with no reason if I can't recreate it
         options:
           - label: Yes, I have tested and provided a repro.lua file
             required: true

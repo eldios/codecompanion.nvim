@@ -1,5 +1,60 @@
 # Changelog
 
+## [12.15.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.14.2...v12.15.0) (2025-03-02)
+
+
+### Features
+
+* blink completions on invoke, without trigger char ([#872](https://github.com/olimorris/codecompanion.nvim/issues/872)) ([51abcf1](https://github.com/olimorris/codecompanion.nvim/commit/51abcf1b4cfeb84c160f7589384b13636fa27e95))
+
+
+### Bug Fixes
+
+* **slash_cmds:** add spacing to `/fetch` input ([#953](https://github.com/olimorris/codecompanion.nvim/issues/953)) ([5f3332b](https://github.com/olimorris/codecompanion.nvim/commit/5f3332bb86a5c6afefb11659db3d78c11350cb66))
+
+## [12.14.2](https://github.com/olimorris/codecompanion.nvim/compare/v12.14.1...v12.14.2) (2025-03-02)
+
+
+### Bug Fixes
+
+* **adapters:** replace vars on every request closes [#1052](https://github.com/olimorris/codecompanion.nvim/issues/1052) ([#1054](https://github.com/olimorris/codecompanion.nvim/issues/1054)) ([942fd80](https://github.com/olimorris/codecompanion.nvim/commit/942fd80b82d7059fa6fe494adea0b15168302e54))
+
+## [12.14.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.14.0...v12.14.1) (2025-02-28)
+
+
+### Bug Fixes
+
+* **ui:** render settings ([#1047](https://github.com/olimorris/codecompanion.nvim/issues/1047)) ([6bcebbf](https://github.com/olimorris/codecompanion.nvim/commit/6bcebbfaccb4fed649bf901bac3654373dece54c))
+
+## [12.14.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.13.3...v12.14.0) (2025-02-27)
+
+
+### Features
+
+* **slash_cmds:** remove git dependency for defualt provider ([#1042](https://github.com/olimorris/codecompanion.nvim/issues/1042)) ([a5c5a32](https://github.com/olimorris/codecompanion.nvim/commit/a5c5a3263ba825b7cd708597e541d2deac3c52f7))
+
+## [12.13.3](https://github.com/olimorris/codecompanion.nvim/compare/v12.13.2...v12.13.3) (2025-02-27)
+
+
+### Bug Fixes
+
+* **adapters:** openai_compatible hardcoded models endpoint closes [#1022](https://github.com/olimorris/codecompanion.nvim/issues/1022) ([#1038](https://github.com/olimorris/codecompanion.nvim/issues/1038)) ([4585695](https://github.com/olimorris/codecompanion.nvim/commit/4585695d2537ccc4cf9b14bc5559b6c29353a588))
+
+## [12.13.2](https://github.com/olimorris/codecompanion.nvim/compare/v12.13.1...v12.13.2) (2025-02-27)
+
+
+### Bug Fixes
+
+* **adapters:** dynamically getting copilot adapters when switching adapters ([c0a820e](https://github.com/olimorris/codecompanion.nvim/commit/c0a820e0184ac0714c608b06fd3822abe79492cb))
+* **adapters:** inline editing with copilot closes [#1036](https://github.com/olimorris/codecompanion.nvim/issues/1036) [#1027](https://github.com/olimorris/codecompanion.nvim/issues/1027) ([#1037](https://github.com/olimorris/codecompanion.nvim/issues/1037)) ([aae4ad7](https://github.com/olimorris/codecompanion.nvim/commit/aae4ad785dea43b1adfb2d0c0c6b546fe09c1819))
+
+## [12.13.1](https://github.com/olimorris/codecompanion.nvim/compare/v12.13.0...v12.13.1) (2025-02-27)
+
+
+### Bug Fixes
+
+* **adapters:** max_tokens error with anthropic ([#1031](https://github.com/olimorris/codecompanion.nvim/issues/1031)) ([59c9109](https://github.com/olimorris/codecompanion.nvim/commit/59c91098f967ffd57f7ae90846a6f751d1c96d2d))
+
 ## [12.13.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.12.0...v12.13.0) (2025-02-25)
 
 

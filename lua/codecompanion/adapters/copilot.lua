@@ -141,12 +141,10 @@ local function get_models(self, opts)
   end
 
   if not _cached_adapter then
-    local adapter = require("codecompanion.adapters").resolve(self)
-    if not adapter then
-      log:error("Could not resolve Copilot adapter in the `get_models` function")
+    if not self then
       return {}
     end
-    _cached_adapter = adapter
+    _cached_adapter = self
   end
 
   get_and_authorize_token()
@@ -169,7 +167,7 @@ local function get_models(self, opts)
 
   local ok, json = pcall(vim.json.decode, response.body)
   if not ok then
-    log:error("Could not parse the response from " .. url .. "/models")
+    log:error("Error parsing the response from " .. url .. "/models.\nError: %s", response.body)
     return {}
   end
 
@@ -180,9 +178,7 @@ local function get_models(self, opts)
 
       -- streaming support
       if model.capabilities.supports.streaming then
-        choice_opts.stream = true
-      else
-        choice_opts.stream = false
+        choice_opts.can_stream = true
       end
 
       models[model.id] = { opts = choice_opts }
@@ -221,7 +217,7 @@ return {
     Authorization = "Bearer ${api_key}",
     ["Content-Type"] = "application/json",
     ["Copilot-Integration-Id"] = "vscode-chat",
-    ["editor-version"] = "Neovim/" .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch,
+    ["Editor-Version"] = "Neovim/" .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch,
   },
   handlers = {
     ---Check for a token before starting the request
@@ -231,18 +227,17 @@ return {
       local model = self.schema.model.default
       local choices = self.schema.model.choices
       if type(model) == "function" then
-        model = model()
+        model = model(self)
       end
       if type(choices) == "function" then
-        choices = choices()
+        choices = choices(self)
       end
       local model_opts = choices[model]
-      if model_opts and model_opts.opts then
-        self.opts = vim.tbl_deep_extend("force", self.opts, model_opts.opts)
-      end
 
-      if self.opts and self.opts.stream then
+      if (self.opts and self.opts.stream) and (model_opts and model_opts.opts and model_opts.opts.can_stream) then
         self.parameters.stream = true
+      else
+        self.parameters.stream = nil
       end
 
       return get_and_authorize_token()
@@ -284,6 +279,7 @@ return {
     end,
   },
   schema = {
+    ---@type CodeCompanion.Schema
     model = {
       order = 1,
       mapping = "parameters",
@@ -295,24 +291,12 @@ return {
         return get_models(self)
       end,
     },
+    ---@type CodeCompanion.Schema
     reasoning_effort = {
       order = 2,
       mapping = "parameters",
       type = "string",
       optional = true,
-      condition = function(schema)
-        local model = schema.model.default
-        local choices = schema.model.choices
-        if type(model) == "function" then
-          model = model()
-        end
-        if type(choices) == "function" then
-          choices = choices()
-        end
-        if choices[model] and choices[model].opts then
-          return choices[model].opts.can_reason
-        end
-      end,
       default = "medium",
       desc = "Constrains effort on reasoning for reasoning models. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.",
       choices = {
@@ -321,13 +305,14 @@ return {
         "low",
       },
     },
+    ---@type CodeCompanion.Schema
     temperature = {
       order = 3,
       mapping = "parameters",
       type = "number",
       default = 0,
-      condition = function(schema)
-        local model = schema.model.default
+      condition = function(self)
+        local model = self.schema.model.default
         if type(model) == "function" then
           model = model()
         end
@@ -342,13 +327,14 @@ return {
       default = 15000,
       desc = "The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.",
     },
+    ---@type CodeCompanion.Schema
     top_p = {
       order = 5,
       mapping = "parameters",
       type = "number",
       default = 1,
-      condition = function(schema)
-        local model = schema.model.default
+      condition = function(self)
+        local model = self.schema.model.default
         if type(model) == "function" then
           model = model()
         end
@@ -356,13 +342,14 @@ return {
       end,
       desc = "An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.",
     },
+    ---@type CodeCompanion.Schema
     n = {
       order = 6,
       mapping = "parameters",
       type = "number",
       default = 1,
-      condition = function(schema)
-        local model = schema.model.default
+      condition = function(self)
+        local model = self.schema.model.default
         if type(model) == "function" then
           model = model()
         end

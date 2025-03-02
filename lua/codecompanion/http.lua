@@ -1,9 +1,7 @@
 local Curl = require("plenary.curl")
 local Path = require("plenary.path")
-
 local config = require("codecompanion.config")
 local log = require("codecompanion.utils.log")
-local schema = require("codecompanion.schema")
 local util = require("codecompanion.utils")
 
 ---@class CodeCompanion.Client
@@ -22,6 +20,18 @@ Client.static.opts = {
   schedule = { default = vim.schedule_wrap },
 }
 
+local function transform_static(opts)
+  local ret = {}
+  for k, v in pairs(Client.static.opts) do
+    if opts and opts[k] ~= nil then
+      ret[k] = opts[k]
+    else
+      ret[k] = v.default
+    end
+  end
+  return ret
+end
+
 ---@class CodeCompanion.ClientArgs
 ---@field adapter CodeCompanion.Adapter
 ---@field opts nil|table
@@ -34,7 +44,7 @@ function Client.new(args)
 
   return setmetatable({
     adapter = args.adapter,
-    opts = args.opts or schema.get_default(Client.static.opts, args.opts),
+    opts = args.opts or transform_static(args.opts),
     user_args = args.user_args or {},
   }, { __index = Client })
 end
@@ -51,7 +61,9 @@ function Client:request(payload, actions, opts)
   opts = opts or {}
   local cb = log:wrap_cb(actions.callback, "Response error: %s") --[[@type function]]
 
-  local adapter = self.adapter
+  -- Make a copy of the adapter to ensure that we replace variables in every request
+  local adapter = vim.deepcopy(self.adapter)
+
   local handlers = adapter.handlers
 
   if handlers and handlers.setup then

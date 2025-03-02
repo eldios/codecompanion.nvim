@@ -10,7 +10,9 @@
 <a href="https://github.com/olimorris/codecompanion.nvim/releases"><img src="https://img.shields.io/github/v/release/olimorris/codecompanion.nvim?style=for-the-badge"></a>
 </p>
 
-<p align="center">Powerful AI coding, natively in Neovim</p>
+<p align="center">AI-powered coding, seamlessly in Neovim</p>
+
+<p align="center">Connect to any LLM with the <a href="https://codecompanion.olimorris.dev/getting-started.html">in-built</a> adapters, the <a href="https://codecompanion.olimorris.dev/configuration/adapters.html#user-contributed-adapters">community</a> adapters or by <a href="https://codecompanion.olimorris.dev/extending/adapters.html">building</a> your own</p>
 
 <p align="center">New features are always announced <a href="https://github.com/olimorris/codecompanion.nvim/discussions/categories/announcements">here</a></p>
 
@@ -19,7 +21,7 @@
 Thank you to the following people:
 
 <p align="center">
-<!-- coffee --><a href="https://github.com/bassamsdata"><img src="https://github.com/bassamsdata.png" width="60px" alt="Bassam Data" /></a><a href="https://github.com/ivo-toby"><img src="https://github.com/ivo-toby.png" width="60px" alt="Ivo Toby" /></a><a href="https://github.com/KTSCode"><img src="https://github.com/KTSCode.png" width="60px" alt="KTS Code" /></a><a href="https://x.com/luxus"><img src="https://pbs.twimg.com/profile_images/744754093495844864/GwnEJygG_400x400.jpg" width="60px" alt="Luxus" /></a><!-- coffee --><!-- sponsors --><a href="https://github.com/koskeller"><img src="https:&#x2F;&#x2F;github.com&#x2F;koskeller.png" width="60px" alt="User avatar: Konstantin Keller" /></a><a href="https://github.com/carlosflorencio"><img src="https:&#x2F;&#x2F;github.com&#x2F;carlosflorencio.png" width="60px" alt="User avatar: Carlos Florêncio" /></a><a href="https://github.com/jfgordon2"><img src="https:&#x2F;&#x2F;github.com&#x2F;jfgordon2.png" width="60px" alt="User avatar: Jeff Gordon" /></a><a href="https://github.com/rnevius"><img src="https:&#x2F;&#x2F;github.com&#x2F;rnevius.png" width="60px" alt="User avatar: Ryan Nevius" /></a><a href="https://github.com/versality"><img src="https:&#x2F;&#x2F;github.com&#x2F;versality.png" width="60px" alt="User avatar: Artyom Pertsovsky" /></a><a href="https://github.com/llinfeng"><img src="https:&#x2F;&#x2F;github.com&#x2F;llinfeng.png" width="60px" alt="User avatar: Linfeng Li" /></a><a href="https://github.com/Jawkx"><img src="https:&#x2F;&#x2F;github.com&#x2F;Jawkx.png" width="60px" alt="User avatar: JAW" /></a><a href="https://github.com/prettymuchbryce"><img src="https:&#x2F;&#x2F;github.com&#x2F;prettymuchbryce.png" width="60px" alt="User avatar: Bryce Neal" /></a><a href="https://github.com/brenocq"><img src="https:&#x2F;&#x2F;github.com&#x2F;brenocq.png" width="60px" alt="User avatar: Breno Cunha Queiroz" /></a><!-- sponsors -->
+<!-- coffee --><a href="https://github.com/bassamsdata"><img src="https://github.com/bassamsdata.png" width="60px" alt="Bassam Data" /></a><a href="https://github.com/ivo-toby"><img src="https://github.com/ivo-toby.png" width="60px" alt="Ivo Toby" /></a><a href="https://github.com/KTSCode"><img src="https://github.com/KTSCode.png" width="60px" alt="KTS Code" /></a><a href="https://x.com/luxus"><img src="https://pbs.twimg.com/profile_images/744754093495844864/GwnEJygG_400x400.jpg" width="60px" alt="Luxus" /></a><!-- coffee --><!-- sponsors --><a href="https://github.com/carlosflorencio"><img src="https:&#x2F;&#x2F;github.com&#x2F;carlosflorencio.png" width="60px" alt="User avatar: Carlos Florêncio" /></a><a href="https://github.com/jfgordon2"><img src="https:&#x2F;&#x2F;github.com&#x2F;jfgordon2.png" width="60px" alt="User avatar: Jeff Gordon" /></a><a href="https://github.com/rnevius"><img src="https:&#x2F;&#x2F;github.com&#x2F;rnevius.png" width="60px" alt="User avatar: Ryan Nevius" /></a><a href="https://github.com/versality"><img src="https:&#x2F;&#x2F;github.com&#x2F;versality.png" width="60px" alt="User avatar: Artyom Pertsovsky" /></a><a href="https://github.com/llinfeng"><img src="https:&#x2F;&#x2F;github.com&#x2F;llinfeng.png" width="60px" alt="User avatar: Linfeng Li" /></a><a href="https://github.com/Jawkx"><img src="https:&#x2F;&#x2F;github.com&#x2F;Jawkx.png" width="60px" alt="User avatar: JAW" /></a><a href="https://github.com/prettymuchbryce"><img src="https:&#x2F;&#x2F;github.com&#x2F;prettymuchbryce.png" width="60px" alt="User avatar: Bryce Neal" /></a><a href="https://github.com/brenocq"><img src="https:&#x2F;&#x2F;github.com&#x2F;brenocq.png" width="60px" alt="User avatar: Breno Cunha Queiroz" /></a><!-- sponsors -->
 </p>
 
 <!-- panvimdoc-ignore-end -->
@@ -27,7 +29,7 @@ Thank you to the following people:
 ## :sparkles: Features
 
 - :speech_balloon: [Copilot Chat](https://github.com/features/copilot) meets [Zed AI](https://zed.dev/blog/zed-ai), in Neovim
-- :electric_plug: Support for Anthropic, Copilot, GitHub Models, DeepSeek, Gemini, Ollama, OpenAI, Azure OpenAI, HuggingFace and xAI LLMs (or bring your own!)
+- :electric_plug: Support for Anthropic, Copilot, GitHub Models, DeepSeek, Gemini, Ollama, OpenAI, Azure OpenAI, HuggingFace and xAI LLMs (or [bring your own](https://codecompanion.olimorris.dev/extending/adapters.html))
 - :heart_hands: User contributed and supported [adapters](https://codecompanion.olimorris.dev/configuration/adapters.html#user-contributed-adapters)
 - :rocket: Inline transformations, code creation and refactoring
 - :robot: Variables, Slash Commands, Agents/Tools and Workflows to improve LLM output
@@ -47,7 +49,7 @@ Thank you to the following people:
   </p>
   <p>
     <h3>Using Agents and Tools</h3>
-    <video conrols muted src="https://github.com/user-attachments/assets/16bd6c17-bd70-41a1-83aa-7af45c166ae9"></video>
+    <video controls muted src="https://github.com/user-attachments/assets/16bd6c17-bd70-41a1-83aa-7af45c166ae9"></video>
   </p>
   <p>
     <h3>Agentic Workflows</h3>
@@ -61,10 +63,9 @@ Thank you to the following people:
 
 <!-- panvimdoc-ignore-end -->
 
-## :book: Documentation
+## :rocket: Getting Started
 
-Please visit the [documentation site](https://codecompanion.olimorris.dev) for information around installation, configuration and usage.
-
+Please visit the [docs](https://codecompanion.olimorris.dev) for information on installation, configuration and usage.
 
 ## :toolbox: Troubleshooting
 
