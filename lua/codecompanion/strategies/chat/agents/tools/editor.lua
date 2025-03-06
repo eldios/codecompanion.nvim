@@ -5,11 +5,9 @@ multiple edits in the same XML block.
 --]]
 
 local config = require("codecompanion.config")
-
 local keymaps = require("codecompanion.utils.keymaps")
 local log = require("codecompanion.utils.log")
 local ui = require("codecompanion.utils.ui")
-local xml2lua = require("codecompanion.utils.xml.xml2lua")
 
 local api = vim.api
 
@@ -97,15 +95,15 @@ local function add(bufnr, action)
   add_delta(bufnr, start_line, tonumber(#lines))
 end
 
----@class CodeCompanion.Tool
+---@class CodeCompanion.Agent.Tool
 return {
   name = "editor",
   cmds = {
     ---Ensure the final function returns the status and the output
-    ---@param self CodeCompanion.Tools The Tools object
+    ---@param self CodeCompanion.Agent.Tool The Tools object
     ---@param actions table The action object
-    ---@param input any The output from the previous function call
-    ---@return { status: string, msg: string }
+    ---@param input? any The output from the previous function call
+    ---@return nil|{ status: string, msg: string }
     function(self, actions, input)
       ---Run the action
       ---@param action table
@@ -267,7 +265,7 @@ return {
       },
     },
   },
-  system_prompt = function(schema)
+  system_prompt = function(schema, xml2lua)
     return string.format(
       [[## Editor Tool (`editor`) - Enhanced Guidelines
 
@@ -350,7 +348,8 @@ d) **Multiple Actions** (If several actions (add, update, delete) need to be per
     )
   end,
   handlers = {
-    on_exit = function(self)
+    ---@param agent CodeCompanion.Agent
+    on_exit = function(agent)
       deltas = {}
       diff_started = false
     end,

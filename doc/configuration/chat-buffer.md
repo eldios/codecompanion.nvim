@@ -119,30 +119,27 @@ Credit to [@lazymaniac](https://github.com/lazymaniac) for the [inspiration](htt
 
 ## Agents and Tools
 
-Tools perform specific tasks (e.g., running shell commands, editing buffers, etc.) when invoked by an LLM. You can group them into an Agent and both can be referenced with `@` when in the chat buffer:
+Tools perform specific tasks (e.g., running shell commands, editing buffers, etc.) when invoked by an LLM. Multiple tools can be grouped together. Both can be referenced with `@` when in the chat buffer:
 
 ```lua
 require("codecompanion").setup({
   strategies = {
     chat = {
-      agents = {
-        ["my_agent"] = {
-          description = "A custom agent combining tools",
-          system_prompt = "Describe what the agent should do",
-          tools = {
-            "cmd_runner",
-            "editor",
-            -- Add your own tools or reuse existing ones
-          },
-        },
-      },
       tools = {
         ["my_tool"] = {
           description = "Run a custom task",
-          callback = function(command)
-            -- Perform the custom task here
-            return "Tool result"
-          end,
+          callback = require("user.codecompanion.tools.my_tool")
+        },
+        groups = {
+          ["my_group"] = {
+            description = "A custom agent combining tools",
+            system_prompt = "Describe what the agent should do",
+            tools = {
+              "cmd_runner",
+              "editor",
+              -- Add your own tools or reuse existing ones
+            },
+          },
         },
       },
     },
@@ -152,7 +149,25 @@ require("codecompanion").setup({
 
 When users introduce the agent `@my_agent` in the chat buffer, it can call the tools you listed (like `@my_tool`) to perform tasks on your code.
 
-The `callback` option for a tool can also be a [`CodeCompanion.Tool`](/extending/tools) object, which is a table with specific keys that defines the interface and workflow of the tool.
+A tool is a [`CodeCompanion.Tool`](/extending/tools) table with specific keys that define the interface and workflow of the tool. The table can be resolved using the `callback` option. The `callback` option can be a table itself or either a function or a string that points to a luafile that return the table.
+
+Some tools, such as the [@cmd_runner](/usage/chat-buffer/agents.html#cmd-runner), require the user to approve any commands before they're executed. This can be changed by altering the config for each tool:
+
+```lua
+require("codecompanion").setup({
+  strategies = {
+    chat = {
+      tools = {
+        ["cmd_runner"] = {
+          opts = {
+            requires_approval = false,
+          },
+        },
+      }
+    }
+  }
+})
+```
 
 ## Layout
 

@@ -1,5 +1,49 @@
 # Changelog
 
+## [13.2.1](https://github.com/olimorris/codecompanion.nvim/compare/v13.2.0...v13.2.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* **chat:** can set system prompt dynamically when switching adapters closes [#1033](https://github.com/olimorris/codecompanion.nvim/issues/1033) ([#1077](https://github.com/olimorris/codecompanion.nvim/issues/1077)) ([b76a47a](https://github.com/olimorris/codecompanion.nvim/commit/b76a47a62383dcf22dd41839467ea37d2e82ee59))
+
+## [13.2.0](https://github.com/olimorris/codecompanion.nvim/compare/v13.1.0...v13.2.0) (2025-03-05)
+
+
+### Features
+
+* **tools:** function tools can update the agent status + doc updates ([#1074](https://github.com/olimorris/codecompanion.nvim/issues/1074)) ([e59c1f0](https://github.com/olimorris/codecompanion.nvim/commit/e59c1f04983edac15f195bfc73cd90bf08a3565b))
+
+## [13.1.0](https://github.com/olimorris/codecompanion.nvim/compare/v13.0.1...v13.1.0) (2025-03-04)
+
+
+### Features
+
+* **tools:** callbacks can be functions ([#1065](https://github.com/olimorris/codecompanion.nvim/issues/1065)) ([dff8a1c](https://github.com/olimorris/codecompanion.nvim/commit/dff8a1c969b66987923c14a305a654ea51b5e2a6))
+
+
+### Bug Fixes
+
+* **chat:** references not being added with `show_header_separators` closes [#1067](https://github.com/olimorris/codecompanion.nvim/issues/1067) ([#1069](https://github.com/olimorris/codecompanion.nvim/issues/1069)) ([9cd4094](https://github.com/olimorris/codecompanion.nvim/commit/9cd4094e5ccc428faae487568aabeb4873393f1b))
+
+## [13.0.1](https://github.com/olimorris/codecompanion.nvim/compare/v13.0.0...v13.0.1) (2025-03-04)
+
+
+### Bug Fixes
+
+* **chat:** show tools and groups in helper window ([#1062](https://github.com/olimorris/codecompanion.nvim/issues/1062)) ([baa283e](https://github.com/olimorris/codecompanion.nvim/commit/baa283efe3ecf8d1d5183b10ac3cdfae2c9c8820))
+
+## [13.0.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.15.0...v13.0.0) (2025-03-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **tools:** add queue and streamline implementation ([#965](https://github.com/olimorris/codecompanion.nvim/issues/965))
+
+### Code Refactoring
+
+* **tools:** add queue and streamline implementation ([#965](https://github.com/olimorris/codecompanion.nvim/issues/965)) ([acd48ef](https://github.com/olimorris/codecompanion.nvim/commit/acd48eff972e334bb863c6b083db90c7fcb0b053))
+
 ## [12.15.0](https://github.com/olimorris/codecompanion.nvim/compare/v12.14.2...v12.15.0) (2025-03-02)
 
 
