@@ -855,6 +855,7 @@ This is the code, for context:
         height = 0.8,
         width = 0.45,
         relative = "editor",
+        full_height = true,
         opts = {
           breakindent = true,
           cursorcolumn = false,
@@ -868,6 +869,7 @@ This is the code, for context:
           wrap = true,
         },
       },
+      auto_scroll = true, -- Automatically scroll down and place the cursor at the end
       intro_message = "Welcome to CodeCompanion ✨! Press ? for options",
 
       show_header_separator = false, -- Show header separators in the chat buffer? Set this to false if you're using an external markdown formatting plugin
@@ -943,6 +945,7 @@ You must:
 - Avoid including line numbers in code blocks.
 - Avoid wrapping the whole response in triple backticks.
 - Only return code that's directly relevant to the task at hand. You may omit code that isn’t necessary for the solution.
+- Avoid using H1 and H2 headers in your responses.
 - Use actual line breaks in your responses; only use "\n" when you want a literal backslash followed by 'n'.
 - All non-code text responses must be written in the %s language indicated.
 
