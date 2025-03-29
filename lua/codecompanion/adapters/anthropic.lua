@@ -241,6 +241,9 @@ return {
 
         if ok then
           if json.type == "message" then
+            if json.content[2] then
+              return { status = "success", output = json.content[2].text }
+            end
             return { status = "success", output = json.content[1].text }
           end
         end

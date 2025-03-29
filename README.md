@@ -12,7 +12,7 @@
 
 <p align="center">AI-powered coding, seamlessly in Neovim</p>
 
-<p align="center">Connect to any LLM with the <a href="https://codecompanion.olimorris.dev/getting-started.html">in-built</a> adapters, the <a href="https://codecompanion.olimorris.dev/configuration/adapters.html#user-contributed-adapters">community</a> adapters or by <a href="https://codecompanion.olimorris.dev/extending/adapters.html">building</a> your own</p>
+<p align="center">Connect to any LLM with the <a href="https://codecompanion.olimorris.dev/getting-started.html">in-built</a> adapters, the <a href="https://codecompanion.olimorris.dev/configuration/adapters#community-adapters">community</a> adapters or by <a href="https://codecompanion.olimorris.dev/extending/adapters.html">building</a> your own</p>
 
 <p align="center">New features are always announced <a href="https://github.com/olimorris/codecompanion.nvim/discussions/categories/announcements">here</a></p>
 
@@ -21,7 +21,7 @@
 Thank you to the following people:
 
 <p align="center">
-<!-- coffee --><a href="https://github.com/bassamsdata"><img src="https://github.com/bassamsdata.png" width="60px" alt="Bassam Data" /></a><a href="https://github.com/ivo-toby"><img src="https://github.com/ivo-toby.png" width="60px" alt="Ivo Toby" /></a><a href="https://github.com/KTSCode"><img src="https://github.com/KTSCode.png" width="60px" alt="KTS Code" /></a><a href="https://x.com/luxus"><img src="https://pbs.twimg.com/profile_images/744754093495844864/GwnEJygG_400x400.jpg" width="60px" alt="Luxus" /></a><!-- coffee --><!-- sponsors --><a href="https://github.com/carlosflorencio"><img src="https:&#x2F;&#x2F;github.com&#x2F;carlosflorencio.png" width="60px" alt="User avatar: Carlos Florêncio" /></a><a href="https://github.com/jfgordon2"><img src="https:&#x2F;&#x2F;github.com&#x2F;jfgordon2.png" width="60px" alt="User avatar: Jeff Gordon" /></a><a href="https://github.com/llinfeng"><img src="https:&#x2F;&#x2F;github.com&#x2F;llinfeng.png" width="60px" alt="User avatar: Linfeng Li" /></a><a href="https://github.com/Jawkx"><img src="https:&#x2F;&#x2F;github.com&#x2F;Jawkx.png" width="60px" alt="User avatar: JAW" /></a><a href="https://github.com/prettymuchbryce"><img src="https:&#x2F;&#x2F;github.com&#x2F;prettymuchbryce.png" width="60px" alt="User avatar: Bryce Neal" /></a><a href="https://github.com/brenocq"><img src="https:&#x2F;&#x2F;github.com&#x2F;brenocq.png" width="60px" alt="User avatar: Breno Cunha Queiroz" /></a><!-- sponsors -->
+<!-- coffee --><a href="https://github.com/bassamsdata"><img src="https://github.com/bassamsdata.png" width="60px" alt="Bassam Data" /></a><a href="https://github.com/ivo-toby"><img src="https://github.com/ivo-toby.png" width="60px" alt="Ivo Toby" /></a><a href="https://github.com/KTSCode"><img src="https://github.com/KTSCode.png" width="60px" alt="KTS Code" /></a><a href="https://x.com/luxus"><img src="https://pbs.twimg.com/profile_images/744754093495844864/GwnEJygG_400x400.jpg" width="60px" alt="Luxus" /></a><!-- coffee --><!-- sponsors --><a href="https://github.com/carlosflorencio"><img src="https:&#x2F;&#x2F;github.com&#x2F;carlosflorencio.png" width="60px" alt="User avatar: Carlos Florêncio" /></a><a href="https://github.com/jfgordon2"><img src="https:&#x2F;&#x2F;github.com&#x2F;jfgordon2.png" width="60px" alt="User avatar: Jeff Gordon" /></a><a href="https://github.com/llinfeng"><img src="https:&#x2F;&#x2F;github.com&#x2F;llinfeng.png" width="60px" alt="User avatar: Linfeng Li" /></a><a href="https://github.com/Jawkx"><img src="https:&#x2F;&#x2F;github.com&#x2F;Jawkx.png" width="60px" alt="User avatar: JAW" /></a><a href="https://github.com/prettymuchbryce"><img src="https:&#x2F;&#x2F;github.com&#x2F;prettymuchbryce.png" width="60px" alt="User avatar: Bryce Neal" /></a><a href="https://github.com/kohane27"><img src="https:&#x2F;&#x2F;github.com&#x2F;kohane27.png" width="60px" alt="User avatar: kohane27" /></a><!-- sponsors -->
 </p>
 
 <!-- panvimdoc-ignore-end -->
@@ -29,7 +29,7 @@ Thank you to the following people:
 ## :sparkles: Features
 
 - :speech_balloon: [Copilot Chat](https://github.com/features/copilot) meets [Zed AI](https://zed.dev/blog/zed-ai), in Neovim
-- :electric_plug: Support for Anthropic, Copilot, GitHub Models, DeepSeek, Gemini, Ollama, OpenAI, Azure OpenAI, HuggingFace and xAI LLMs (or [bring your own](https://codecompanion.olimorris.dev/extending/adapters.html))
+- :electric_plug: Support for Anthropic, Copilot, GitHub Models, DeepSeek, Gemini, Mistral AI, Novita, Ollama, OpenAI, Azure OpenAI, HuggingFace and xAI LLMs (or [bring your own](https://codecompanion.olimorris.dev/extending/adapters.html))
 - :heart_hands: User contributed and supported [adapters](https://codecompanion.olimorris.dev/configuration/adapters#community-adapters)
 - :rocket: Inline transformations, code creation and refactoring
 - :robot: Variables, Slash Commands, Agents/Tools and Workflows to improve LLM output

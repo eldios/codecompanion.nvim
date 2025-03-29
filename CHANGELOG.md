@@ -1,5 +1,105 @@
 # Changelog
 
+## [14.4.0](https://github.com/olimorris/codecompanion.nvim/compare/v14.3.0...v14.4.0) (2025-03-27)
+
+
+### Features
+
+* **adapters:** add gemini 2.5 pro option ([#1180](https://github.com/olimorris/codecompanion.nvim/issues/1180)) ([f134b6c](https://github.com/olimorris/codecompanion.nvim/commit/f134b6c8f35ea1df4fa45d4f50319554178308fb))
+
+
+### Bug Fixes
+
+* **blink:** cursor put at wrong position after accepting ([#1179](https://github.com/olimorris/codecompanion.nvim/issues/1179)) ([f83641b](https://github.com/olimorris/codecompanion.nvim/commit/f83641ba9e3a8993afb03a856701623c746a05b8))
+
+## [14.3.0](https://github.com/olimorris/codecompanion.nvim/compare/v14.2.2...v14.3.0) (2025-03-27)
+
+
+### Features
+
+* **inline:** vars can now be callbacks closes [#1175](https://github.com/olimorris/codecompanion.nvim/issues/1175)  ([#1176](https://github.com/olimorris/codecompanion.nvim/issues/1176)) ([ccbaf20](https://github.com/olimorris/codecompanion.nvim/commit/ccbaf205d2d842dbef4c9ad9532576cf08fd4b1f))
+
+## [14.2.2](https://github.com/olimorris/codecompanion.nvim/compare/v14.2.1...v14.2.2) (2025-03-19)
+
+
+### Bug Fixes
+
+* **adapters:** copilot token issue when changing adapter closes [#1149](https://github.com/olimorris/codecompanion.nvim/issues/1149) ([#1155](https://github.com/olimorris/codecompanion.nvim/issues/1155)) ([0cc0541](https://github.com/olimorris/codecompanion.nvim/commit/0cc054199c20416da45bdbcadd10b3a9ea748557))
+* **adapters:** remove `tfs_z` from Ollama schema ([#1152](https://github.com/olimorris/codecompanion.nvim/issues/1152)) ([52e2969](https://github.com/olimorris/codecompanion.nvim/commit/52e296963a0a8e6414c0ec72f6bc687b16f2eca7))
+
+## [14.2.1](https://github.com/olimorris/codecompanion.nvim/compare/v14.2.0...v14.2.1) (2025-03-18)
+
+
+### Bug Fixes
+
+* **adapters:** ensure cache_expires is set ([#1146](https://github.com/olimorris/codecompanion.nvim/issues/1146)) ([5d6e3c5](https://github.com/olimorris/codecompanion.nvim/commit/5d6e3c5ad3436e1d0baca6588e96426e11f105e2))
+
+## [14.2.0](https://github.com/olimorris/codecompanion.nvim/compare/v14.1.1...v14.2.0) (2025-03-18)
+
+
+### Features
+
+* **adapters:** add caching to adapters that make http calls to model endpoints ([#1145](https://github.com/olimorris/codecompanion.nvim/issues/1145)) ([9e779b2](https://github.com/olimorris/codecompanion.nvim/commit/9e779b2a4abfc154ba09f3a2d25bc684a413cefd))
+* **adapters:** add support for novita ([#1136](https://github.com/olimorris/codecompanion.nvim/issues/1136)) ([d55dc41](https://github.com/olimorris/codecompanion.nvim/commit/d55dc41e380fffcf3f799d8ed7257ff7a6d51521))
+
+
+### Bug Fixes
+
+* **adapters:** anthropic inline editing ([#1142](https://github.com/olimorris/codecompanion.nvim/issues/1142)) ([ad99cda](https://github.com/olimorris/codecompanion.nvim/commit/ad99cdaca4df56bb3db5ac0a17b423740ce0396d))
+* **blink:** add support to blink newer than 0.13.1 ([#1139](https://github.com/olimorris/codecompanion.nvim/issues/1139)) ([3ee07d6](https://github.com/olimorris/codecompanion.nvim/commit/3ee07d6805d85ddd9c97715af5bc79c8e7f2adb1))
+
+## [14.1.1](https://github.com/olimorris/codecompanion.nvim/compare/v14.1.0...v14.1.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* **adapters:** add mistral to the config ([#1133](https://github.com/olimorris/codecompanion.nvim/issues/1133)) ([fbb0e1d](https://github.com/olimorris/codecompanion.nvim/commit/fbb0e1d0ccdd2eaa16ea9ba0f94ca8e4c64f5b97))
+* **completion:** disable default execute implementation for blink.cmp ([#1137](https://github.com/olimorris/codecompanion.nvim/issues/1137)) ([b88684d](https://github.com/olimorris/codecompanion.nvim/commit/b88684d97af444947cedaeda9cc7ba0205b0d3b4))
+
+## [14.1.0](https://github.com/olimorris/codecompanion.nvim/compare/v14.0.1...v14.1.0) (2025-03-17)
+
+
+### Features
+
+* **adapters:** add Mistral adapter ([#1118](https://github.com/olimorris/codecompanion.nvim/issues/1118)) ([e4754bb](https://github.com/olimorris/codecompanion.nvim/commit/e4754bb2501685721daa50ed843fb98af9d01725))
+
+## [14.0.1](https://github.com/olimorris/codecompanion.nvim/compare/v14.0.0...v14.0.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* **anthropic:** inline editing closes [#1127](https://github.com/olimorris/codecompanion.nvim/issues/1127) ([#1130](https://github.com/olimorris/codecompanion.nvim/issues/1130)) ([bc89f11](https://github.com/olimorris/codecompanion.nvim/commit/bc89f118f1991e9be24c784f72f57f373aa6f84b))
+
+## [14.0.0](https://github.com/olimorris/codecompanion.nvim/compare/v13.5.0...v14.0.0) (2025-03-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **workspaces:** new workspace file format ([#1089](https://github.com/olimorris/codecompanion.nvim/issues/1089))
+
+### Features
+
+* **workspaces:** new workspace file format ([#1089](https://github.com/olimorris/codecompanion.nvim/issues/1089)) ([3f7fd62](https://github.com/olimorris/codecompanion.nvim/commit/3f7fd6292b9d43d38e9760f43b581652210b0349))
+
+## [13.5.0](https://github.com/olimorris/codecompanion.nvim/compare/v13.4.0...v13.5.0) (2025-03-12)
+
+
+### Features
+
+* **tools:** function-based tools can be async ([#1107](https://github.com/olimorris/codecompanion.nvim/issues/1107)) ([97636b9](https://github.com/olimorris/codecompanion.nvim/commit/97636b902ac20c665b0b3d9d5b2c62c16676e136))
+
+## [13.4.0](https://github.com/olimorris/codecompanion.nvim/compare/v13.3.1...v13.4.0) (2025-03-12)
+
+
+### Features
+
+* **chat:** hide system prompts by default ([#1113](https://github.com/olimorris/codecompanion.nvim/issues/1113)) ([161aaba](https://github.com/olimorris/codecompanion.nvim/commit/161aaba38b06bf76f03a35c92ae809f819b88766))
+
+
+### Bug Fixes
+
+* **prompts:** do not ignore user prompt ([#1110](https://github.com/olimorris/codecompanion.nvim/issues/1110)) ([5ee7873](https://github.com/olimorris/codecompanion.nvim/commit/5ee7873342e254828963930e5c9e922c8d978211))
+
 ## [13.3.1](https://github.com/olimorris/codecompanion.nvim/compare/v13.3.0...v13.3.1) (2025-03-11)
 
 
